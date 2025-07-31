@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_weather_app/navigation/routes.dart';
 import 'package:flutter_weather_app/navigation/scaffold_with_drawer.dart';
 import 'package:flutter_weather_app/pages/home_page.dart';
+import 'package:flutter_weather_app/pages/settings_page.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -22,6 +23,16 @@ final router = GoRouter(
               path: Routes.home,
               builder: (context, state) {
                 return const HomePage();
+              },
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: Routes.settings,
+              builder: (context, state) {
+                return const SettingsPage();
               },
             ),
           ],
