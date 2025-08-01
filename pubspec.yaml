@@ -40,7 +40,15 @@ dependencies:
 
   # The "intl" package is used for internationalization and date formatting.
   intl:
+
+  # The "fl_chart" package is used for creating charts in the application.
   fl_chart:
+
+  # The "http" package is used for making HTTP requests.
+  http:
+
+  # The "geolocator" package is used for getting the current location.
+  geolocator:
 
 dev_dependencies:
   flutter_test:

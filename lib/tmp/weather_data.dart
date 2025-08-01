@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class HourlyWeatherData {
   final String time;
   final double temperature;
@@ -27,11 +25,7 @@ class DailyWeatherData {
   final double minTemp;
   final String condition;
 
-  DailyWeatherData(
-      {required this.day,
-      required this.maxTemp,
-      required this.minTemp,
-      required this.condition});
+  DailyWeatherData({required this.day, required this.maxTemp, required this.minTemp, required this.condition});
 }
 
 class WeatherData {
@@ -132,13 +126,23 @@ void addData() {
       ],
       dailyForecast: [
         DailyWeatherData(day: DateTime.now().add(Duration(days: 1)), maxTemp: 24, minTemp: 15, condition: 'Sunny'),
-        DailyWeatherData(day: DateTime.now().add(Duration(days: 2)), maxTemp: 22, minTemp: 14, condition: 'Partly Cloudy'),
+        DailyWeatherData(
+          day: DateTime.now().add(Duration(days: 2)),
+          maxTemp: 22,
+          minTemp: 14,
+          condition: 'Partly Cloudy',
+        ),
         DailyWeatherData(day: DateTime.now().add(Duration(days: 3)), maxTemp: 23, minTemp: 16, condition: 'Cloudy'),
         DailyWeatherData(day: DateTime.now().add(Duration(days: 4)), maxTemp: 20, minTemp: 13, condition: 'Rainy'),
         DailyWeatherData(day: DateTime.now().add(Duration(days: 5)), maxTemp: 25, minTemp: 17, condition: 'Sunny'),
         DailyWeatherData(day: DateTime.now().add(Duration(days: 6)), maxTemp: 26, minTemp: 18, condition: 'Sunny'),
-        DailyWeatherData(day: DateTime.now().add(Duration(days: 7)), maxTemp: 24, minTemp: 16, condition: 'Partly Cloudy'),
-      ]
+        DailyWeatherData(
+          day: DateTime.now().add(Duration(days: 7)),
+          maxTemp: 24,
+          minTemp: 16,
+          condition: 'Partly Cloudy',
+        ),
+      ],
     ),
   );
 
