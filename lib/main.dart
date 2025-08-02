@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_app/navigation/router.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
-  runApp(const MyApp());
+  initializeDateFormatting('de_DE', null).then((_) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

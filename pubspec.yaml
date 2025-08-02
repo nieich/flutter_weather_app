@@ -61,6 +61,9 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
 
+  # The "flutter_launcher_icons" package is used to generate app icons.
+  flutter_launcher_icons:
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
