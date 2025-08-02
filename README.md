@@ -9,12 +9,12 @@ Hier kannst du deine Screenshots einfügen, sobald du welche hast.
 <table>
   <tr>
     <td align="center">
-      <img src="<PLATZHALTER_FÜR_LIGHT_MODE_SCREENSHOT.png>" width="250" alt="Light Mode">
+      <img src="https://github.com/nieich/readme-media/blob/main/flutter-weather-app/flutter_weather_app_light_mode.png" width="250" alt="Light Mode">
       <br>
       <strong>Light Mode</strong>
     </td>
     <td align="center">
-      <img src="<PLATZHALTER_FÜR_DARK_MODE_SCREENSHOT.png>" width="250" alt="Dark Mode">
+      <img src="https://github.com/nieich/readme-media/blob/main/flutter-weather-app/flutter_weather_app_dark_mode.png" width="250" alt="Dark Mode">
       <br>
       <strong>Dark Mode</strong>
     </td>
@@ -45,7 +45,7 @@ Um das Projekt lokal auszuführen, befolge diese Schritte:
 
 1.  **Klone das Repository:**
     ```sh
-    git clone <DEIN_REPOSITORY_LINK>
+    git clone https://github.com/nieich/flutter_weather_app.git
     ```
 2.  **Wechsle in das Projektverzeichnis:**
     ```sh
