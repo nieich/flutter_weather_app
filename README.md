@@ -39,6 +39,10 @@ Hier kannst du deine Screenshots einfügen, sobald du welche hast.
 
 Dieses Projekt nutzt die kostenlose und quelloffene Bright Sky API des Deutschen Wetterdienstes (DWD).
 
+## Attributions
+
+Icon: <a href="https://www.flaticon.com/free-icons/weather" title="weather icons">Weather icons created by Freepik - Flaticon</a>
+
 ## Getting Started
 
 Um das Projekt lokal auszuführen, befolge diese Schritte:
