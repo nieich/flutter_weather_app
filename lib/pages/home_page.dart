@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
             final weatherData = snapshot.data!;
             return RefreshIndicator(
               onRefresh: _refreshWeatherData,
-              child: buildWeatherView(weatherData, MediaQuery.of(context).size),
+              child: buildWeatherView(weatherData, MediaQuery.of(context).size, Theme.of(context)),
             );
           } else {
             return const Center(child: Text('Keine Wetterdaten verfügbar.'));

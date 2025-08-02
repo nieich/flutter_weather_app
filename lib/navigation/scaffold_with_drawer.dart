@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_weather_app/navigation/routes.dart';
 import 'package:go_router/go_router.dart';
 
 class ScaffoldWithDrawer extends StatelessWidget {
@@ -10,7 +9,10 @@ class ScaffoldWithDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Weather App'), backgroundColor: Theme.of(context).colorScheme.primary),
+      appBar: AppBar(
+        title: Text('Weather App', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
       body: navigationShell,
     );
   }
