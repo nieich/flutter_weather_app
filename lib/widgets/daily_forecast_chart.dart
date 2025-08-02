@@ -66,7 +66,7 @@ class DailyForecastChart extends StatelessWidget {
           dotData: const FlDotData(show: false),
           belowBarData: BarAreaData(
             show: true,
-            gradient: LinearGradient(colors: [Colors.cyan.withOpacity(0.3), Colors.blue.withOpacity(0.3)]),
+            gradient: LinearGradient(colors: [Colors.cyan.withValues(alpha: 0.3), Colors.blue.withValues(alpha: 0.3)]),
           ),
         ),
       ],

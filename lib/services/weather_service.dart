@@ -9,22 +9,28 @@ final String _curWeather = "current_weather";
 final String _forecast = "weather";
 
 class WeatherService {
-  // Ersetze dies durch deinen echten API-Schlüssel von einem Wetterdienst
-  //final String _baseUrl = "https://api.openweathermap.org/data/2.5/weather";
-
+  // Hauptmethode, die alle Wetterdaten abruft.
+  // Führt die API-Aufrufe für aktuelles Wetter und Vorhersage parallel aus.
   Future<WeatherData> fetchWeather(double lat, double lon) async {
-    // Baue die URL mit den nötigen Parametern zusammen
-    final response = await http.get(Uri.parse('$_baseUrl$_curWeather?lat=$lat&lon=$lon'));
+    try {
+      // Starte beide Netzwerk-Anfragen gleichzeitig und warte, bis beide abgeschlossen sind.
+      final results = await Future.wait([_fetchCurrentWeather(lat, lon), _fetchFullForecast(lat, lon)]);
 
-    if (response.statusCode == 200) {
-      // Wenn der Server eine 200 OK-Antwort zurückgibt,
-      // parse das JSON.
-      final data = jsonDecode(response.body);
-      final weatherData = data['weather'];
-      final sourceData = data['sources'][0];
+      // Weise die Ergebnisse den entsprechenden Variablen zu.
+      final currentWeatherData = results[0];
+      final forecastData = results[1];
 
-      // Wandle die JSON-Daten in dein WeatherData-Objekt um.
-      // Hinweis: Die stündlichen und täglichen Vorhersagen kommen oft von anderen API-Endpunkten.
+      // Extrahiere die relevanten Teile aus den JSON-Antworten.
+      final weatherData = currentWeatherData['weather'];
+      final sourceData = currentWeatherData['sources'][0];
+      final hourlyForecastList = forecastData['weather'] as List;
+
+      // Verarbeite die Rohdaten der Vorhersage lokal, ohne weitere API-Aufrufe.
+      final now = DateTime.now();
+      final hourlyForecast = _processHourlyForecast(hourlyForecastList, now);
+      final dailyForecast = _processDailyForecast(hourlyForecastList);
+
+      // Baue das finale WeatherData-Objekt zusammen und gib es zurück.
       return WeatherData(
         stationName: sourceData['station_name'],
         temperature: (weatherData['temperature'] as num?)?.toDouble() ?? 0.0,
@@ -34,32 +40,44 @@ class WeatherService {
         dewPoint: (weatherData['dew_point'] as num?)?.toDouble() ?? 0.0,
         visibility: ((weatherData['visibility'] as num?)?.toDouble() ?? 0.0) / 1000, // in km
         condition: weatherData['condition'] ?? 'N/A',
-        hourlyForecast: await fetchHourlyForecast(lat, lon), // Diese müssten separat geladen werden
-        dailyForecast: await fetchDailyForecast(lat, lon),
+        hourlyForecast: hourlyForecast,
+        dailyForecast: dailyForecast,
       );
-    } else {
-      // Wenn die Antwort nicht OK war, wirf eine Ausnahme, um den Fehler zu behandeln.
-      throw Exception('Wetterdaten konnten nicht geladen werden. Statuscode: ${response.statusCode}');
+    } catch (e) {
+      // Fange alle Fehler (Netzwerk, Parsing, etc.) und wirf eine einheitliche Exception.
+      throw Exception('Wetterdaten konnten nicht geladen werden: $e');
     }
   }
-}
 
-Future<List<HourlyWeatherData>> fetchHourlyForecast(double lat, double lon) async {
-  final DateTime now = DateTime.now();
-  final String formattedNow = DateFormat("yyyy-MM-dd").format(now);
-  //Needs to be +2 days as it will stop at 0:00 otherwise
-  final String formattedTomorrow = DateFormat("yyyy-MM-dd").format(now.add(Duration(days: 2)));
+  // Private Hilfsmethode zum Abrufen des aktuellen Wetters.
+  Future<Map<String, dynamic>> _fetchCurrentWeather(double lat, double lon) async {
+    final response = await http.get(Uri.parse('$_baseUrl$_curWeather?lat=$lat&lon=$lon'));
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Aktuelles Wetter konnte nicht geladen werden. Statuscode: ${response.statusCode}');
+    }
+  }
 
-  final response = await http.get(
-    Uri.parse('$_baseUrl$_forecast?date=$formattedNow&last_date=$formattedTomorrow&lat=$lat&lon=$lon'),
-  );
+  // Private Hilfsmethode zum Abrufen der kompletten 8-Tage-Vorhersage.
+  Future<Map<String, dynamic>> _fetchFullForecast(double lat, double lon) async {
+    final DateTime now = DateTime.now();
+    final String formattedStart = DateFormat("yyyy-MM-dd").format(now);
+    final String formattedEnd = DateFormat("yyyy-MM-dd").format(now.add(const Duration(days: 8)));
 
-  if (response.statusCode == 200) {
-    final data = jsonDecode(response.body);
-    final hourlyData = data['weather'] as List;
+    final response = await http.get(
+      Uri.parse('$_baseUrl$_forecast?date=$formattedStart&last_date=$formattedEnd&lat=$lat&lon=$lon'),
+    );
 
-    // Filtere die Liste, um nur zukünftige Vorhersagen zu erhalten (max. 24).
-    // Wir mappen zuerst, um das Parsen des Timestamps nicht doppelt auszuführen.
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Vorhersagedaten konnten nicht geladen werden. Statuscode: ${response.statusCode}');
+    }
+  }
+
+  // Verarbeitet die Rohdaten der Vorhersage, um eine stündliche Liste für die nächsten 24h zu erstellen.
+  List<HourlyWeatherData> _processHourlyForecast(List<dynamic> hourlyData, DateTime now) {
     return hourlyData
         .map((item) => {'timestamp': DateTime.parse(item['timestamp']), 'data': item})
         .where((entry) => !entry['timestamp']!.isBefore(now))
@@ -75,71 +93,52 @@ Future<List<HourlyWeatherData>> fetchHourlyForecast(double lat, double lon) asyn
           );
         })
         .toList();
-  } else {
-    throw Exception('Stündliche Wetterdaten konnten nicht geladen werden. Statuscode: ${response.statusCode}');
   }
-}
 
-Future<List<DailyWeatherData>> fetchDailyForecast(double lat, double lon) async {
-  final DateTime now = DateTime.now();
-  final String formattedStart = DateFormat("yyyy-MM-dd").format(now);
-  //Needs to be +8 days as it will stop at 0:00 otherwise
-  final String formattedEnd = DateFormat("yyyy-MM-dd").format(now.add(Duration(days: 8)));
+  // Verarbeitet die Rohdaten der Vorhersage, um eine tägliche Liste zu erstellen.
+  List<DailyWeatherData> _processDailyForecast(List<dynamic> hourlyData) {
+    if (hourlyData.isEmpty) return [];
 
-  final response = await http.get(
-    Uri.parse('$_baseUrl$_forecast?date=$formattedStart&last_date=$formattedEnd&lat=$lat&lon=$lon'),
-  );
-
-  if (response.statusCode == 200) {
-    final data = jsonDecode(response.body);
-    final hourlyData = data['weather'] as List;
-
-    // 1. Gruppiere die stündlichen Daten nach Tag
     final Map<String, List<dynamic>> groupedByDay = {};
+
+    // Gruppiere die stündlichen Daten nach Tag
     for (var item in hourlyData) {
-      // Extrahiere den Datumsteil des Timestamps als Schlüssel (z.B. "2023-10-27")
-      final dayKey = (item['timestamp'] as String).substring(0, 10);
+      final timestamp = DateTime.parse(item['timestamp']);
+      final dayKey = DateFormat('yyyy-MM-dd').format(timestamp);
       if (groupedByDay[dayKey] == null) {
         groupedByDay[dayKey] = [];
       }
       groupedByDay[dayKey]!.add(item);
     }
 
-    // 2. Verarbeite jede Tagesgruppe, um Min/Max-Temp und die Hauptwetterlage zu ermitteln
     final List<DailyWeatherData> dailyForecasts = [];
-    groupedByDay.forEach((dayString, dayHourlyData) {
-      if (dayHourlyData.isEmpty) return;
 
-      double maxTemp = -double.infinity;
-      double minTemp = double.infinity;
-      Map<String, int> conditionCounts = {};
+    // Verarbeite die Daten für jeden Tag
+    groupedByDay.forEach((dayKey, dayData) {
+      if (dayData.isEmpty) return;
 
-      for (var hourlyItem in dayHourlyData) {
-        final temp = (hourlyItem['temperature'] as num?)?.toDouble() ?? 0.0;
-        if (temp > maxTemp) maxTemp = temp;
+      double minTemp = double.maxFinite;
+      double maxTemp = -double.maxFinite;
+
+      for (var item in dayData) {
+        final temp = (item['temperature'] as num?)?.toDouble() ?? 0.0;
         if (temp < minTemp) minTemp = temp;
-
-        final condition = hourlyItem['condition'] as String?;
-        if (condition != null) {
-          conditionCounts[condition] = (conditionCounts[condition] ?? 0) + 1;
-        }
+        if (temp > maxTemp) maxTemp = temp;
       }
 
-      // Finde die häufigste Wetterbedingung für den Tag
-      String dominantCondition = conditionCounts.entries.reduce((a, b) => a.value > b.value ? a : b).key;
-
-      dailyForecasts.add(
-        DailyWeatherData(
-          day: DateTime.parse(dayString),
-          maxTemp: maxTemp,
-          minTemp: minTemp,
-          condition: dominantCondition,
-        ),
+      // Nimm die Wetterbedingung um die Mittagszeit als repräsentativ
+      final noonData = dayData.firstWhere(
+        (item) => DateTime.parse(item['timestamp']).hour >= 12,
+        orElse: () => dayData.first,
       );
+      final String condition = noonData['condition'] ?? 'N/A';
+
+      final date = DateTime.parse(dayData.first['timestamp']);
+      // Wochentag auf Deutsch formatieren (erfordert Initialisierung in main.dart)
+
+      dailyForecasts.add(DailyWeatherData(day: date, minTemp: minTemp, maxTemp: maxTemp, condition: condition));
     });
 
     return dailyForecasts;
-  } else {
-    throw Exception('Tägliche Wetterdaten konnten nicht geladen werden. Statuscode: ${response.statusCode}');
   }
 }
