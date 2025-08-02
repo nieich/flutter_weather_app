@@ -37,6 +37,7 @@ class WeatherData {
   final double dewPoint;
   final double visibility;
   final String condition;
+  final String icon;
   final List<HourlyWeatherData> hourlyForecast;
   final List<DailyWeatherData> dailyForecast;
 
@@ -49,6 +50,7 @@ class WeatherData {
     required this.dewPoint,
     required this.visibility,
     required this.condition,
+    required this.icon,
     this.hourlyForecast = const [],
     this.dailyForecast = const [],
   });
@@ -80,6 +82,7 @@ void addData() {
       dewPoint: 18.0,
       visibility: 10.0,
       condition: 'Sunny',
+      icon: 'clear-day',
       hourlyForecast: [
         HourlyWeatherData(
           time: '08:00',
@@ -156,6 +159,7 @@ void addData() {
       dewPoint: 15.5,
       visibility: 12.0,
       condition: 'Cloudy',
+      icon: 'clear-day',
       hourlyForecast: [
         HourlyWeatherData(
           time: '08:00',

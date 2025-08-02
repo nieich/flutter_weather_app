@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_app/tmp/weather_data.dart';
+import 'package:flutter_weather_app/utils/weather_condition_enum.dart';
 import 'package:flutter_weather_app/widgets/daily_forecast_chart.dart';
 import 'package:intl/intl.dart';
+import 'dart:math' as math;
 
 ListView buildWeatherView(WeatherData weatherData, Size size) {
+  final random = math.Random();
+  final randomImageIndex = random.nextInt(2) + 1; // Zufällige Zahl zwischen 1 und 2
+  final imagePath = WeatherCondition.fromString(weatherData.icon).assetPath.replaceAll('_X', '_$randomImageIndex');
+
   return ListView(
     children: [
       Card(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8.0),
-          child: Image.asset('assets/images/sunny.jpg', fit: BoxFit.cover),
+          child: Image.asset(imagePath, fit: BoxFit.cover),
         ),
       ),
       Row(

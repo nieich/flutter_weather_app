@@ -40,6 +40,7 @@ class WeatherService {
         dewPoint: (weatherData['dew_point'] as num?)?.toDouble() ?? 0.0,
         visibility: ((weatherData['visibility'] as num?)?.toDouble() ?? 0.0) / 1000, // in km
         condition: weatherData['condition'] ?? 'N/A',
+        icon: weatherData['icon'] ?? 'N/A',
         hourlyForecast: hourlyForecast,
         dailyForecast: dailyForecast,
       );
