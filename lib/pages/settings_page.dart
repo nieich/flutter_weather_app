@@ -49,7 +49,7 @@ class SettingsPage extends StatelessWidget {
             spacing: 12.0,
             runSpacing: 12.0,
             children: colorOptions.map((color) {
-              final isSelected = themeProvider.seedColor.value == color.value;
+              final isSelected = themeProvider.seedColor == color;
               return GestureDetector(
                 onTap: () => themeProvider.setSeedColor(color),
                 child: Container(

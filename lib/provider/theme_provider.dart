@@ -23,7 +23,7 @@ class ThemeProvider with ChangeNotifier {
   Future<void> setSeedColor(Color color) async {
     _seedColor = color;
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_themeColorKey, color.value);
+    await prefs.setInt(_themeColorKey, color.toARGB32());
     notifyListeners();
   }
 }
