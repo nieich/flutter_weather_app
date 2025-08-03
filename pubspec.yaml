@@ -55,6 +55,9 @@ dependencies:
   # The "shared_prefearences" package is used for storing simple data locally.
   shared_preferences:
 
+  # The "provider" package is used for state management.
+  provider:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

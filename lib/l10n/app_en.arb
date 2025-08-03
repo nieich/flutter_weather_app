@@ -42,5 +42,18 @@
   "dailyPrecipitation": "Daily Precipitation Forecast",
   "@dailyPrecipitation": {
     "description": "Precipitation forecast for the next days"
-  }  
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "title for the settings page"
+  },
+  "themeColor": "Design Color",
+  "@themeColor": {
+    "description": "Header for the theme color selection"
+  },
+  "themeColorDescription": "Choose a color for the app design",
+  "@themeColorDescription": {
+    "description": "Description for the theme color selection"
+  }
+
 }

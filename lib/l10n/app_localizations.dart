@@ -163,6 +163,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Daily Precipitation Forecast'**
   String get dailyPrecipitation;
+
+  /// title for the settings page
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// Header for the theme color selection
+  ///
+  /// In en, this message translates to:
+  /// **'Design Color'**
+  String get themeColor;
+
+  /// Description for the theme color selection
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a color for the app design'**
+  String get themeColorDescription;
 }
 
 class _AppLocalizationsDelegate

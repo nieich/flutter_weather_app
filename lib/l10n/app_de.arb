@@ -42,5 +42,17 @@
   "dailyPrecipitation": "Niederschlagsvorhersage",
   "@dailyPrecipitation": {
     "description": "Niederschlagsvorhersage für die nächsten Tage"
-  }  
+  },
+  "settings": "Einstellungen",
+  "@settings": {
+    "description": "Titel für die Einstellungsseite"
+  },
+  "themeColor": "Design-Farbe",
+  "@themeColor": {
+    "description": "Überschrift für die Farbauswahl"
+  },
+  "themeColorDescription": "Wähle eine Akzentfarbe, um das Farbschema der App zu generieren.",
+  "@themeColorDescription": {
+    "description": "Beschreibung für die Farbauswahl"
+  }
 }

@@ -40,4 +40,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dailyPrecipitation => 'Daily Precipitation Forecast';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get themeColor => 'Design Color';
+
+  @override
+  String get themeColorDescription => 'Choose a color for the app design';
 }

@@ -40,4 +40,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get dailyPrecipitation => 'Niederschlagsvorhersage';
+
+  @override
+  String get settings => 'Einstellungen';
+
+  @override
+  String get themeColor => 'Design-Farbe';
+
+  @override
+  String get themeColorDescription =>
+      'Wähle eine Akzentfarbe, um das Farbschema der App zu generieren.';
 }
