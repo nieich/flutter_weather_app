@@ -12,6 +12,7 @@ class WeatherService {
   // Hauptmethode, die alle Wetterdaten abruft.
   // Führt die API-Aufrufe für aktuelles Wetter und Vorhersage parallel aus.
   Future<WeatherData> fetchWeather(double lat, double lon) async {
+    print('Fetching weather data for lat: $lat, lon: $lon');
     try {
       // Starte beide Netzwerk-Anfragen gleichzeitig und warte, bis beide abgeschlossen sind.
       final results = await Future.wait([_fetchCurrentWeather(lat, lon), _fetchFullForecast(lat, lon)]);
@@ -127,6 +128,15 @@ class WeatherService {
         if (temp > maxTemp) maxTemp = temp;
       }
 
+      double minPrecipitaion = double.maxFinite;
+      double maxPrecipitaion = -double.maxFinite;
+
+      for (var item in dayData) {
+        final precipitaion = (item['precipitation_probability'] as num?)?.toDouble() ?? 0.0;
+        if (precipitaion < minPrecipitaion) minPrecipitaion = precipitaion;
+        if (precipitaion > maxPrecipitaion) maxPrecipitaion = precipitaion;
+      }
+
       // Nimm die Wetterbedingung um die Mittagszeit als repräsentativ
       final noonData = dayData.firstWhere(
         (item) => DateTime.parse(item['timestamp']).hour >= 12,
@@ -137,7 +147,16 @@ class WeatherService {
       final date = DateTime.parse(dayData.first['timestamp']);
       // Wochentag auf Deutsch formatieren (erfordert Initialisierung in main.dart)
 
-      dailyForecasts.add(DailyWeatherData(day: date, minTemp: minTemp, maxTemp: maxTemp, condition: condition));
+      dailyForecasts.add(
+        DailyWeatherData(
+          day: date,
+          minTemp: minTemp,
+          maxTemp: maxTemp,
+          minPrecipitationProbability: minPrecipitaion,
+          maxPrecipitationProbability: maxPrecipitaion,
+          condition: condition,
+        ),
+      );
     });
 
     return dailyForecasts;

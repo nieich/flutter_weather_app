@@ -45,25 +45,32 @@ class DailyWeatherData {
   final DateTime day;
   final double maxTemp;
   final double minTemp;
+  final double minPrecipitationProbability;
+  final double maxPrecipitationProbability;
   final String condition;
 
-  DailyWeatherData({required this.day, required this.maxTemp, required this.minTemp, required this.condition});
+  DailyWeatherData({
+    required this.day,
+    required this.maxTemp,
+    required this.minTemp,
+    required this.minPrecipitationProbability,
+    required this.maxPrecipitationProbability,
+    required this.condition,
+  });
 
   Map<String, dynamic> toJson() {
-    return {
-      'day': day.toIso8601String(),
-      'maxTemp': maxTemp,
-      'minTemp': minTemp,
-      'condition': condition,
-    };
+    return {'day': day.toIso8601String(), 'maxTemp': maxTemp, 'minTemp': minTemp, 'condition': condition};
   }
 
   factory DailyWeatherData.fromJson(Map<String, dynamic> json) {
     return DailyWeatherData(
-        day: DateTime.parse(json['day'] as String),
-        maxTemp: (json['maxTemp'] as num).toDouble(),
-        minTemp: (json['minTemp'] as num).toDouble(),
-        condition: json['condition'] as String);
+      day: DateTime.parse(json['day'] as String),
+      maxTemp: (json['maxTemp'] as num).toDouble(),
+      minTemp: (json['minTemp'] as num).toDouble(),
+      minPrecipitationProbability: (json['minPrecipitationProbability'] as num).toDouble(),
+      maxPrecipitationProbability: (json['maxPrecipitationProbability'] as num).toDouble(),
+      condition: json['condition'] as String,
+    );
   }
 }
 

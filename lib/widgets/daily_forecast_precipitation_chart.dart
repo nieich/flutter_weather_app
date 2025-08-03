@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_weather_app/tmp/weather_data.dart';
 import 'package:intl/intl.dart';
 
-class DailyForecastChart extends StatelessWidget {
+class DailyForecastPrecipitaionChart extends StatelessWidget {
   final List<DailyWeatherData> dailyForecast;
 
-  const DailyForecastChart({super.key, required this.dailyForecast});
+  const DailyForecastPrecipitaionChart({super.key, required this.dailyForecast});
 
   @override
   Widget build(BuildContext context) {
@@ -46,22 +46,32 @@ class DailyForecastChart extends StatelessWidget {
           sideTitles: SideTitles(showTitles: true, reservedSize: 30, interval: 1, getTitlesWidget: bottomTitleWidgets),
         ),
         leftTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: true, interval: 5, getTitlesWidget: leftTitleWidgets, reservedSize: 42),
+          sideTitles: SideTitles(showTitles: true, interval: 10, getTitlesWidget: leftTitleWidgets, reservedSize: 42),
+        ),
+      ),
+      lineTouchData: LineTouchData(
+        touchTooltipData: LineTouchTooltipData(
+          getTooltipItems: (List<LineBarSpot> touchedSpots) {
+            return touchedSpots.map((spot) {
+              final precipitation = dailyForecast[spot.x.toInt()].maxPrecipitationProbability;
+              return LineTooltipItem('$precipitation%', const TextStyle(color: Colors.white));
+            }).toList();
+          },
         ),
       ),
       borderData: FlBorderData(show: true, border: Border.all(color: const Color(0xff37434d))),
       minX: 0,
       maxX: (dailyForecast.length - 1).toDouble(),
       minY: 0,
-      maxY: 35,
+      maxY: 100,
       lineBarsData: [
         LineChartBarData(
           spots: dailyForecast.asMap().entries.map((entry) {
-            return FlSpot(entry.key.toDouble(), entry.value.maxTemp);
+            return FlSpot(entry.key.toDouble(), entry.value.maxPrecipitationProbability);
           }).toList(),
           isCurved: true,
           gradient: const LinearGradient(colors: [Colors.cyan, Colors.blue]),
-          barWidth: 5,
+          barWidth: 2,
           isStrokeCapRound: true,
           dotData: const FlDotData(show: false),
           belowBarData: BarAreaData(
@@ -83,7 +93,7 @@ class DailyForecastChart extends StatelessWidget {
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     return Text(
-      '${value.toInt()}°',
+      '${value.toInt()}%',
       style: const TextStyle(color: Colors.white70, fontSize: 12),
       textAlign: TextAlign.left,
     );

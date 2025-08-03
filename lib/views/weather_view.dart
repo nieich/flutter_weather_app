@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_app/tmp/weather_data.dart';
 import 'package:flutter_weather_app/utils/weather_condition_enum.dart';
-import 'package:flutter_weather_app/widgets/daily_forecast_chart.dart';
+import 'package:flutter_weather_app/widgets/daily_forecast_precipitation_chart.dart';
+import 'package:flutter_weather_app/widgets/daily_forecast_temp_chart.dart';
 import 'package:flutter_weather_app/utils/hourly_weather_condition_enum.dart';
 import 'package:intl/intl.dart';
 import 'dart:math' as math;
@@ -92,7 +93,8 @@ ListView buildWeatherView(WeatherData weatherData, Size size, ThemeData theme) {
         ),
       ),
       SizedBox(height: 10),
-      DailyForecastChart(dailyForecast: weatherData.dailyForecast),
+      DailyForecastTempChart(dailyForecast: weatherData.dailyForecast),
+      DailyForecastPrecipitaionChart(dailyForecast: weatherData.dailyForecast),
     ],
   );
 }
