@@ -24,16 +24,14 @@ final router = GoRouter(
               builder: (context, state) {
                 return const HomePage();
               },
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: Routes.settings,
-              builder: (context, state) {
-                return const SettingsPage();
-              },
+              routes: [
+                GoRoute(
+                  path: Routes.settings,
+                  builder: (context, state) {
+                    return const SettingsPage();
+                  },
+                ),
+              ],
             ),
           ],
         ),

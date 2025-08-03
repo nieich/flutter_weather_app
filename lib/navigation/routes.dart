@@ -1,7 +1,8 @@
 class Routes {
   Routes._();
   static const String home = '/Home';
-  static const String settings = '/Settings';
+  static const String settings = 'Settings';
+  static const String pathSettings = '$home/$settings';
 
   // static const String alarm = '/alarm';
   // static const String addAlarm = 'addAlarm';
