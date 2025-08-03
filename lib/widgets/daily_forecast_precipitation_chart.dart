@@ -1,6 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_weather_app/tmp/weather_data.dart';
+import 'package:flutter_weather_app/model/weather_model.dart';
 import 'package:intl/intl.dart';
 
 class DailyForecastPrecipitaionChart extends StatelessWidget {

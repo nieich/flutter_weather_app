@@ -1,4 +1,4 @@
-import 'package:flutter_weather_app/tmp/weather_data.dart';
+import 'package:flutter_weather_app/model/weather_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WeatherCacheService {

@@ -1,7 +1,7 @@
 // lib/services/weather_service.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_weather_app/tmp/weather_data.dart';
+import 'package:flutter_weather_app/model/weather_model.dart';
 import 'package:intl/intl.dart'; // Deine Model-Klasse
 
 final String _baseUrl = "https://api.brightsky.dev/";

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_weather_app/tmp/weather_data.dart';
+import 'package:flutter_weather_app/model/weather_model.dart';
 import 'package:flutter_weather_app/utils/weather_condition_enum.dart';
 import 'package:flutter_weather_app/widgets/daily_forecast_precipitation_chart.dart';
 import 'package:flutter_weather_app/widgets/daily_forecast_temp_chart.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_weather_app/services/weather_cache_service.dart';
 import 'package:flutter_weather_app/services/location_service.dart';
 import 'package:flutter_weather_app/services/weather_service.dart';
-import 'package:flutter_weather_app/tmp/weather_data.dart';
+import 'package:flutter_weather_app/model/weather_model.dart';
 import 'package:flutter_weather_app/views/weather_view.dart';
 
 class HomePage extends StatefulWidget {
