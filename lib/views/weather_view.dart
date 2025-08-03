@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_weather_app/model/weather_model.dart';
+import 'package:flutter_weather_app/l10n/app_localizations.dart';
 import 'package:flutter_weather_app/utils/weather_condition_enum.dart';
 import 'package:flutter_weather_app/widgets/daily_forecast_precipitation_chart.dart';
 import 'package:flutter_weather_app/widgets/daily_forecast_temp_chart.dart';
@@ -7,7 +7,7 @@ import 'package:flutter_weather_app/utils/hourly_weather_condition_enum.dart';
 import 'package:intl/intl.dart';
 import 'dart:math' as math;
 
-ListView buildWeatherView(WeatherData weatherData, Size size, ThemeData theme) {
+ListView buildWeatherView(BuildContext context, weatherData, Size size, ThemeData theme) {
   final random = math.Random();
   final randomImageIndex = random.nextInt(2) + 1; // Zufällige Zahl zwischen 1 und 2
   final imagePath = WeatherCondition.fromString(weatherData.icon).assetPath.replaceAll('_X', '_$randomImageIndex');
@@ -32,36 +32,36 @@ ListView buildWeatherView(WeatherData weatherData, Size size, ThemeData theme) {
       Row(
         children: [
           Text(
-            DateFormat('EE, dd.MMM').format(DateTime.now()),
+            DateFormat('EE, dd.MMM', AppLocalizations.of(context)!.localeName).format(DateTime.now()),
             style: TextStyle(fontSize: 14, color: theme.colorScheme.onSurface),
           ),
         ],
       ),
       Row(children: [Text(weatherData.stationName, style: theme.textTheme.headlineSmall)]),
-      Text('Detail'),
+      Text(AppLocalizations.of(context)!.details),
       Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              buildInfoTile('${weatherData.temperature}°C', 'Temperature', size, theme),
-              buildInfoTile('${weatherData.windSpeed} m/s', 'Wind Speed', size, theme),
-              buildInfoTile('${weatherData.humidity}%', 'Humidity', size, theme),
+              buildInfoTile('${weatherData.temperature}°C', AppLocalizations.of(context)!.temperature, size, theme),
+              buildInfoTile('${weatherData.windSpeed} m/s', AppLocalizations.of(context)!.windSpeed, size, theme),
+              buildInfoTile('${weatherData.humidity}%', AppLocalizations.of(context)!.humidity, size, theme),
             ],
           ),
           const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              buildInfoTile('${weatherData.pressure} hPa', 'Pressure', size, theme),
-              buildInfoTile('${weatherData.dewPoint}°C', 'Dew Point', size, theme),
-              buildInfoTile('${weatherData.visibility} km', 'Visibility', size, theme),
+              buildInfoTile('${weatherData.pressure} hPa', AppLocalizations.of(context)!.pressure, size, theme),
+              buildInfoTile('${weatherData.dewPoint}°C', AppLocalizations.of(context)!.dewPoint, size, theme),
+              buildInfoTile('${weatherData.visibility} km', AppLocalizations.of(context)!.visibility, size, theme),
             ],
           ),
         ],
       ),
       SizedBox(height: 10),
-      Text('Stündlich', style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface)),
+      Text(AppLocalizations.of(context)!.hourly, style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface)),
       SizedBox(
         height: 150,
         child: ListView.builder(
@@ -111,9 +111,17 @@ Container buildInfoTile(String upperTxt, String lowerTxt, Size size, ThemeData t
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(upperTxt, style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface)),
+        Text(
+          upperTxt,
+          style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface),
+          textAlign: TextAlign.center,
+        ),
         const SizedBox(height: 5),
-        Text(lowerTxt, style: TextStyle(fontSize: 14, color: theme.colorScheme.onSurface)),
+        Text(
+          lowerTxt,
+          style: TextStyle(fontSize: 14, color: theme.colorScheme.onSurface),
+          textAlign: TextAlign.center,
+        ),
       ],
     ),
   );

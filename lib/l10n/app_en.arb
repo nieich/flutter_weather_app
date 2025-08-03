@@ -1,0 +1,38 @@
+{
+  "title": "Weather App",
+  "@title": {
+    "description": "Titel of the app"
+  },
+  "details": "Details",
+  "@details": {
+    "description": "Details about the weather"
+  },
+  "temperature": "Temperature",
+  "@temperature": {
+    "description": "Temperature in degrees Celsius"
+  },
+  "humidity": "Humidity",
+  "@humidity": {
+    "description": "Humidity percentage"
+  },
+  "windSpeed": "Wind Speed",
+  "@wind": {
+    "description": "Wind speed in km/h"
+  },
+  "pressure": "Pressure",
+  "@pressure": {
+    "description": "Atmospheric pressure in hPa"
+  },
+  "dewPoint": "Dew Point",
+  "@drewpoint": {
+    "description": "Dew point temperature in degrees Celsius"
+  },
+  "visibility": "Visibility",
+  "@visibility": {
+    "description": "Visibility in km"
+  },
+  "hourly": "Hourly Forecast",
+  "@hourly": {
+    "description": "Hourly weather forecast"
+  }  
+}

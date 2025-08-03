@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_weather_app/l10n/app_localizations.dart';
 import 'package:flutter_weather_app/navigation/router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
-  // Initialisiere die Formatierungsdaten für Deutsch.
-  await initializeDateFormatting('de', null);
+  // Ensure that plugin services are initialized before running the app
+  await initializeDateFormatting('en', null);
   runApp(const MyApp());
 }
 
@@ -30,6 +31,8 @@ class MyApp extends StatelessWidget {
       ),
       // 3. Sage Flutter, es soll das System-Theme verwenden
       themeMode: ThemeMode.system,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: router,
     );
   }

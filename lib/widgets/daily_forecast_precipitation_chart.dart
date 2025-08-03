@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_app/model/weather_model.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_weather_app/l10n/app_localizations.dart';
 
 class DailyForecastPrecipitaionChart extends StatelessWidget {
   final List<DailyWeatherData> dailyForecast;
@@ -18,18 +19,18 @@ class DailyForecastPrecipitaionChart extends StatelessWidget {
         color: const Color(0xff232d37),
         child: Padding(
           padding: const EdgeInsets.only(top: 24, bottom: 12, left: 8, right: 20),
-          child: LineChart(mainData()),
+          child: LineChart(mainData(context)),
         ),
       ),
     );
   }
 
-  LineChartData mainData() {
+  LineChartData mainData(BuildContext context) {
     return LineChartData(
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        horizontalInterval: 5,
+        horizontalInterval: 10,
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return const FlLine(color: Color(0xff37434d), strokeWidth: 1);
@@ -43,7 +44,12 @@ class DailyForecastPrecipitaionChart extends StatelessWidget {
         rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
         bottomTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: true, reservedSize: 30, interval: 1, getTitlesWidget: bottomTitleWidgets),
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 30,
+            interval: 1,
+            getTitlesWidget: (value, meta) => bottomTitleWidgets(value, meta, context),
+          ),
         ),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(showTitles: true, interval: 10, getTitlesWidget: leftTitleWidgets, reservedSize: 42),
@@ -83,11 +89,12 @@ class DailyForecastPrecipitaionChart extends StatelessWidget {
     );
   }
 
-  Widget bottomTitleWidgets(double value, TitleMeta meta) {
+  Widget bottomTitleWidgets(double value, TitleMeta meta, BuildContext context) {
     final day = dailyForecast[value.toInt()].day;
+    final locale = AppLocalizations.of(context)!.localeName;
     return SideTitleWidget(
       meta: meta,
-      child: Text(DateFormat('E').format(day), style: const TextStyle(color: Colors.white70, fontSize: 12)),
+      child: Text(DateFormat('E', locale).format(day), style: const TextStyle(color: Colors.white70, fontSize: 12)),
     );
   }
 

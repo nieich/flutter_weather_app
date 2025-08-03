@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> {
     if (_weatherData != null) {
       return RefreshIndicator(
         onRefresh: _refreshWeatherData,
-        child: buildWeatherView(_weatherData!, MediaQuery.of(context).size, Theme.of(context)),
+        child: buildWeatherView(context, _weatherData!, MediaQuery.of(context).size, Theme.of(context)),
       );
     }
 
