@@ -81,6 +81,7 @@ ListView buildWeatherView(WeatherData weatherData, Size size, ThemeData theme) {
                       hourlyData.time,
                       style: TextStyle(fontSize: 16, color: theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
                     ),
+                    Text('${hourlyData.precipitationProbability}%', style: TextStyle(color: Colors.blue)),
                     Icon(hourlyCondition.icon, size: 32, color: theme.colorScheme.primary),
                     Text('${hourlyData.temperature}°C', style: const TextStyle(fontSize: 18)),
                   ],
