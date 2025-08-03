@@ -34,4 +34,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get hourly => 'Stündliche Vorhersage';
+
+  @override
+  String get dailyTemp => 'Temperaturvorhersage';
+
+  @override
+  String get dailyPrecipitation => 'Niederschlagsvorhersage';
 }

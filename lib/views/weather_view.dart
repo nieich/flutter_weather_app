@@ -55,7 +55,12 @@ ListView buildWeatherView(BuildContext context, weatherData, Size size, ThemeDat
             children: [
               buildInfoTile('${weatherData.pressure} hPa', AppLocalizations.of(context)!.pressure, size, theme),
               buildInfoTile('${weatherData.dewPoint}°C', AppLocalizations.of(context)!.dewPoint, size, theme),
-              buildInfoTile('${weatherData.visibility} km', AppLocalizations.of(context)!.visibility, size, theme),
+              buildInfoTile(
+                '${weatherData.visibility.toStringAsFixed(2)} km',
+                AppLocalizations.of(context)!.visibility,
+                size,
+                theme,
+              ),
             ],
           ),
         ],
@@ -63,7 +68,7 @@ ListView buildWeatherView(BuildContext context, weatherData, Size size, ThemeDat
       SizedBox(height: 10),
       Text(AppLocalizations.of(context)!.hourly, style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface)),
       SizedBox(
-        height: 150,
+        height: 160,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: weatherData.hourlyForecast.length,
@@ -93,7 +98,12 @@ ListView buildWeatherView(BuildContext context, weatherData, Size size, ThemeDat
         ),
       ),
       SizedBox(height: 10),
+      Text(AppLocalizations.of(context)!.dailyTemp, style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface)),
       DailyForecastTempChart(dailyForecast: weatherData.dailyForecast),
+      Text(
+        AppLocalizations.of(context)!.dailyPrecipitation,
+        style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface),
+      ),
       DailyForecastPrecipitaionChart(dailyForecast: weatherData.dailyForecast),
     ],
   );

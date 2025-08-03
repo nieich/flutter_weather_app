@@ -151,6 +151,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hourly Forecast'**
   String get hourly;
+
+  /// Temperature forecast for the next days
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Temperature Forecast'**
+  String get dailyTemp;
+
+  /// Precipitation forecast for the next days
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Precipitation Forecast'**
+  String get dailyPrecipitation;
 }
 
 class _AppLocalizationsDelegate
