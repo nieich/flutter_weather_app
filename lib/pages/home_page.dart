@@ -28,19 +28,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _loadInitialData() async {
-    // 1. Lade Daten aus dem Cache, um sie sofort anzuzeigen.
+    // 1. load data from the cache to display it immediately.
     final cachedData = await _cacheService.loadWeatherData();
     if (mounted && cachedData != null) {
       setState(() {
         _weatherData = cachedData;
-        _isLoading = false; // Wir haben Daten, der Haupt-Ladeindikator kann weg.
+        _isLoading = false; // We have data, the main load indicator can go.
       });
     }
 
-    // 2. Fordere im Hintergrund frische Daten an.
+    // 2. request fresh data in the background.
     await _refreshWeatherData();
 
-    // 3. Stelle sicher, dass der Ladezustand beendet ist, auch wenn ein Fehler aufgetreten ist.
+    // 3. make sure that the charging status is complete, even if an error has occurred.
     if (mounted && _isLoading) {
       setState(() {
         _isLoading = false;
@@ -53,25 +53,25 @@ class _HomePageState extends State<HomePage> {
       final position = await _locationService.getCurrentPosition();
       final freshData = await _weatherService.fetchWeather(position.latitude, position.longitude);
 
-      // Speichere die neuen Daten im Cache.
+      // Save the new data in the cache.
       await _cacheService.saveWeatherData(freshData);
 
       if (mounted) {
         setState(() {
           _weatherData = freshData;
-          _error = null; // Fehler zurücksetzen bei Erfolg
+          _error = null; // Reset error on success
         });
       }
     } catch (e) {
       if (mounted) {
         final errorMessage = 'Fehler: $e';
-        // Zeige den Fehler nur an, wenn keine alten Daten vorhanden sind.
+        // Only display the error if no old data is available.
         if (_weatherData == null) {
           setState(() {
             _error = errorMessage;
           });
         }
-        // Informiere den Benutzer über den fehlgeschlagenen Refresh.
+        // Inform the user about the failed refresh.
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(const SnackBar(content: Text('Aktualisierung der Wetterdaten fehlgeschlagen.')));
@@ -85,12 +85,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildContent() {
-    // Zeige einen Ladeindikator, wenn die App startet und kein Cache vorhanden ist.
+    // Show a loading indicator when the app starts and there is no cache.
     if (_isLoading && _weatherData == null) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    // Zeige eine Fehlermeldung, wenn etwas schiefgelaufen ist und wir keine Daten haben.
+    // Show an error message if something went wrong and we have no data.
     if (_error != null && _weatherData == null) {
       return RefreshIndicator(
         onRefresh: _refreshWeatherData,
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    // Wenn wir Daten haben (aus dem Cache oder frisch), zeigen wir sie an.
+    // If we have data (from the cache or fresh), we display it.
     if (_weatherData != null) {
       return RefreshIndicator(
         onRefresh: _refreshWeatherData,
@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    // Fallback, falls keine Daten vorhanden sind.
+    // Fallback if no data is available.
     return const Center(child: Text('Keine Wetterdaten verfügbar.'));
   }
 }

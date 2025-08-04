@@ -6,18 +6,35 @@ import 'dart:convert';
 /// including `Forecast`, `CurrentData`, `HourlyData` and their units.
 /// The main class that encapsulates the entire API response.
 class Forecast {
+  // Represents the latitude and longitude of the location.
   final double latitude;
   final double longitude;
+  // Represents the time taken to generate the response in milliseconds.
   final double generationtimeMs;
+  // Represents the UTC offset in seconds.
   final int utcOffsetSeconds;
+  // Represents the timezone of the location.
   final String timezone;
+  // Represents the timezone abbreviation.
   final String timezoneAbbreviation;
+  // Represents the elevation of the location in meters.
   final double elevation;
+  // Optional fields for current, hourly, and daily data.
   final CurrentUnits? currentUnits;
+
+  /// Represents the current weather data.
   final CurrentData? current;
+
+  /// Represents the units for the hourly forecast data.
   final HourlyUnits? hourlyUnits;
+
+  /// Represents the hourly forecast data.
   final HourlyData? hourly;
+
+  /// Represents the units for the daily forecast data.
   final DailyUnits? dailyUnits;
+
+  /// Represents the daily forecast data.
   final DailyData? daily;
 
   static const String apiUrlBase = 'https://api.open-meteo.com/v1/forecast';
@@ -57,7 +74,7 @@ class Forecast {
     );
   }
 
-  /// Konvertiert die [Forecast]-Instanz in eine JSON-Map.
+  /// Converts the [Forecast] instance into a JSON map.
   Map<String, dynamic> toJson() {
     return {
       'latitude': latitude,
@@ -76,10 +93,10 @@ class Forecast {
     };
   }
 
-  /// Konvertiert die [Forecast]-Instanz in einen JSON-String.
+  /// Converts the [Forecast] instance into a JSON string.
   String toJsonString() => json.encode(toJson());
 
-  /// Erstellt eine [Forecast]-Instanz aus einem JSON-String.
+  /// Creates a [Forecast] instance from a JSON string.
   factory Forecast.fromJsonString(String jsonString) =>
       Forecast.fromJson(json.decode(jsonString) as Map<String, dynamic>);
 }
@@ -128,13 +145,21 @@ class CurrentUnits {
 
 /// Represents the current weather data.
 class CurrentData {
+  // Represents the time of the current data.
   final String? time;
+  // Represents the interval of the current data in [CurrentUnits.interval].
   final int? interval;
+  // Represents the temperature at 2 meters above ground level.
   final double? temperature2m;
+  // Represents the relative humidity at 2 meters above ground level.
   final int? relativeHumidity2m;
+  // Represents the precipitation amount.
   final double? precipitation;
+  // Represents the wind speed at 10 meters above ground level.
   final double? windSpeed10m;
+  // Represents the wind direction at 10 meters above ground level.
   final int? windDirection10m;
+  // Represents the cloud cover.
   final int? cloudCover;
   // Add further data fields with the appropriate type here if required.
 
@@ -162,7 +187,7 @@ class CurrentData {
     );
   }
 
-  /// Konvertiert die [CurrentData]-Instanz in eine JSON-Map.
+  /// Converts the [CurrentData] instance into a JSON map.
   Map<String, dynamic> toJson() {
     return {
       'time': time,
@@ -203,8 +228,11 @@ class HourlyUnits {
 
 /// Represents the hourly forecast data as lists.
 class HourlyData {
+  // Represents the time of the hourly data.
   final List<String>? time;
+  // Represents the temperature at 2 meters above ground level as a list.
   final List<double>? temperature2m;
+  // Represents the precipitation probability as a list.
   final List<int>? precipitationProbability;
   // Add further data fields here as a list with the appropriate type if required.
 
@@ -225,12 +253,11 @@ class HourlyData {
   }
 }
 
-/// Repräsentiert die Einheiten für die täglichen Vorhersagedaten.
+/// Represents the units for the daily forecast data.
 class DailyUnits {
   final String? time;
   final String? temperature2mMax;
   final String? temperature2mMin;
-  // Füge hier bei Bedarf weitere Einheiten als nullable String hinzu.
 
   DailyUnits({this.time, this.temperature2mMax, this.temperature2mMin});
 
@@ -242,18 +269,17 @@ class DailyUnits {
     );
   }
 
-  /// Konvertiert die [DailyUnits]-Instanz in eine JSON-Map.
+  /// Converts the [DailyUnits] instance into a JSON map.
   Map<String, dynamic> toJson() {
     return {'time': time, 'temperature_2m_max': temperature2mMax, 'temperature_2m_min': temperature2mMin};
   }
 }
 
-/// Repräsentiert die täglichen Vorhersagedaten als Listen.
+/// Represents the daily forecast data as lists.
 class DailyData {
   final List<String>? time;
   final List<double>? temperature2mMax;
   final List<double>? temperature2mMin;
-  // Füge hier bei Bedarf weitere Datenfelder als Liste mit dem passenden Typ hinzu.
 
   DailyData({this.time, this.temperature2mMax, this.temperature2mMin});
 
@@ -265,7 +291,7 @@ class DailyData {
     );
   }
 
-  /// Konvertiert die [DailyData]-Instanz in eine JSON-Map.
+  /// Converts the [DailyData] instance into a JSON map.
   Map<String, dynamic> toJson() {
     return {'time': time, 'temperature_2m_max': temperature2mMax, 'temperature_2m_min': temperature2mMin};
   }

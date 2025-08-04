@@ -1,37 +1,36 @@
-// lib/services/weather_service.dart
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_weather_app/model/weather_model.dart';
-import 'package:intl/intl.dart'; // Deine Model-Klasse
+import 'package:intl/intl.dart';
 
 final String _baseUrl = "https://api.brightsky.dev/";
 final String _curWeather = "current_weather";
 final String _forecast = "weather";
 
 class WeatherService {
-  // Hauptmethode, die alle Wetterdaten abruft.
-  // Führt die API-Aufrufe für aktuelles Wetter und Vorhersage parallel aus.
+  // Main method that retrieves all weather data.
+  // Executes the API calls for current weather and forecast in parallel.
   Future<WeatherData> fetchWeather(double lat, double lon) async {
     print('Fetching weather data for lat: $lat, lon: $lon');
     try {
-      // Starte beide Netzwerk-Anfragen gleichzeitig und warte, bis beide abgeschlossen sind.
+      // Start both network requests at the same time and wait until both are completed.
       final results = await Future.wait([_fetchCurrentWeather(lat, lon), _fetchFullForecast(lat, lon)]);
 
-      // Weise die Ergebnisse den entsprechenden Variablen zu.
+      // Assign the results to the corresponding variables.
       final currentWeatherData = results[0];
       final forecastData = results[1];
 
-      // Extrahiere die relevanten Teile aus den JSON-Antworten.
+      // Extract the relevant parts from the JSON responses.
       final weatherData = currentWeatherData['weather'];
       final sourceData = currentWeatherData['sources'][0];
       final hourlyForecastList = forecastData['weather'] as List;
 
-      // Verarbeite die Rohdaten der Vorhersage lokal, ohne weitere API-Aufrufe.
+      // Process the raw data of the prediction locally, without further API calls.
       final now = DateTime.now();
       final hourlyForecast = _processHourlyForecast(hourlyForecastList, now);
       final dailyForecast = _processDailyForecast(hourlyForecastList);
 
-      // Baue das finale WeatherData-Objekt zusammen und gib es zurück.
+      // Assemble the final WeatherData object and return it.
       return WeatherData(
         stationName: sourceData['station_name'],
         temperature: (weatherData['temperature'] as num?)?.toDouble() ?? 0.0,
@@ -46,12 +45,12 @@ class WeatherService {
         dailyForecast: dailyForecast,
       );
     } catch (e) {
-      // Fange alle Fehler (Netzwerk, Parsing, etc.) und wirf eine einheitliche Exception.
+      // Catch all errors (network, parsing, etc.) and throw a single exception.
       throw Exception('Wetterdaten konnten nicht geladen werden: $e');
     }
   }
 
-  // Private Hilfsmethode zum Abrufen des aktuellen Wetters.
+  // Private auxiliary method for retrieving the current weather.
   Future<Map<String, dynamic>> _fetchCurrentWeather(double lat, double lon) async {
     final response = await http.get(Uri.parse('$_baseUrl$_curWeather?lat=$lat&lon=$lon'));
     if (response.statusCode == 200) {
@@ -61,7 +60,7 @@ class WeatherService {
     }
   }
 
-  // Private Hilfsmethode zum Abrufen der kompletten 8-Tage-Vorhersage.
+  // Private auxiliary method for retrieving the complete 8-day forecast.
   Future<Map<String, dynamic>> _fetchFullForecast(double lat, double lon) async {
     final DateTime now = DateTime.now();
     final String formattedStart = DateFormat("yyyy-MM-dd").format(now);
@@ -78,7 +77,7 @@ class WeatherService {
     }
   }
 
-  // Verarbeitet die Rohdaten der Vorhersage, um eine stündliche Liste für die nächsten 24h zu erstellen.
+  // Processes the raw forecast data to create an hourly list for the next 24 hours.
   List<HourlyWeatherData> _processHourlyForecast(List<dynamic> hourlyData, DateTime now) {
     return hourlyData
         .map((item) => {'timestamp': DateTime.parse(item['timestamp']), 'data': item})
@@ -97,7 +96,7 @@ class WeatherService {
         .toList();
   }
 
-  // Verarbeitet die Rohdaten der Vorhersage, um eine tägliche Liste zu erstellen.
+  // Processes the raw forecast data to create a daily list.
   List<DailyWeatherData> _processDailyForecast(List<dynamic> hourlyData) {
     if (hourlyData.isEmpty) return [];
 
@@ -115,7 +114,7 @@ class WeatherService {
 
     final List<DailyWeatherData> dailyForecasts = [];
 
-    // Verarbeite die Daten für jeden Tag
+    // Process the data for each day
     groupedByDay.forEach((dayKey, dayData) {
       if (dayData.isEmpty) return;
 
@@ -137,7 +136,7 @@ class WeatherService {
         if (precipitaion > maxPrecipitaion) maxPrecipitaion = precipitaion;
       }
 
-      // Nimm die Wetterbedingung um die Mittagszeit als repräsentativ
+      // Take the weather condition around midday as representative
       final noonData = dayData.firstWhere(
         (item) => DateTime.parse(item['timestamp']).hour >= 12,
         orElse: () => dayData.first,
@@ -145,7 +144,7 @@ class WeatherService {
       final String condition = noonData['condition'] ?? 'N/A';
 
       final date = DateTime.parse(dayData.first['timestamp']);
-      // Wochentag auf Deutsch formatieren (erfordert Initialisierung in main.dart)
+      // Format weekday in German (requires initialization in main.dart)
 
       dailyForecasts.add(
         DailyWeatherData(
