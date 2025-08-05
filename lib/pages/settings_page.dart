@@ -43,21 +43,27 @@ class SettingsPage extends StatelessWidget {
         children: [
           Text(l10n.themeMode, style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 16),
-          DropdownButtonFormField<ThemeMode>(
-            value: themeProvider.themeMode,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            ),
-            items: ThemeMode.values.map((mode) {
-              return DropdownMenuItem(value: mode, child: Text(_getThemeModeName(mode, l10n)));
-            }).toList(),
-            onChanged: (value) {
-              if (value != null) {
-                themeProvider.setThemeMode(value);
-              }
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return DropdownMenu<ThemeMode>(
+                // Use LayoutBuilder to get the available width and make the menu expand.
+                width: constraints.maxWidth,
+                // This is the key property to ensure the menu always opens downwards.
+                //position: DropdownMenuPosition.below,
+                initialSelection: themeProvider.themeMode,
+                onSelected: (ThemeMode? mode) {
+                  if (mode != null) {
+                    themeProvider.setThemeMode(mode);
+                  }
+                },
+                // Convert the ThemeMode enum into a list of menu entries.
+                dropdownMenuEntries: ThemeMode.values.map<DropdownMenuEntry<ThemeMode>>((ThemeMode mode) {
+                  return DropdownMenuEntry<ThemeMode>(value: mode, label: _getThemeModeName(mode, l10n));
+                }).toList(),
+              );
             },
           ),
+          const SizedBox(height: 8),
           Text(l10n.themeColor, style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 8),
           Text(l10n.themeColorDescription, style: Theme.of(context).textTheme.bodyMedium),
