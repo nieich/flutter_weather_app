@@ -205,6 +205,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dark'**
   String get darkTheme;
+
+  /// Header for the color mode selection
+  ///
+  /// In en, this message translates to:
+  /// **'Color Mode'**
+  String get colorMode;
+
+  /// Seed color for the color mode
+  ///
+  /// In en, this message translates to:
+  /// **'Seed Color'**
+  String get colorModeSeed;
+
+  /// Individual color for the color mode
+  ///
+  /// In en, this message translates to:
+  /// **'Individual Color'**
+  String get colorModeIndividual;
+
+  /// Header for the individual color mode selection
+  ///
+  /// In en, this message translates to:
+  /// **'Individual Color Mode'**
+  String get individualColorMode;
+
+  /// Description for the individual color mode selection
+  ///
+  /// In en, this message translates to:
+  /// **'Select a custom color for each element in the app.'**
+  String get individualColorModeDescription;
+
+  /// Header for the primary color selection
+  ///
+  /// In en, this message translates to:
+  /// **'Primary Color'**
+  String get primaryColor;
+
+  /// Header for the on primary color selection
+  ///
+  /// In en, this message translates to:
+  /// **'On Primary Color'**
+  String get onPrimaryColor;
+
+  /// Header for the secondary color selection
+  ///
+  /// In en, this message translates to:
+  /// **'Secondary Color'**
+  String get secondaryColor;
+
+  /// Header for the on secondary color selection
+  ///
+  /// In en, this message translates to:
+  /// **'On Secondary Color'**
+  String get onSecondaryColor;
+
+  /// Header for the surface color selection
+  ///
+  /// In en, this message translates to:
+  /// **'Surface Color'**
+  String get surfaceColor;
+
+  /// Header for the on surface color selection
+  ///
+  /// In en, this message translates to:
+  /// **'On Surface Color'**
+  String get onSurfaceColor;
+
+  /// Header for the error color selection
+  ///
+  /// In en, this message translates to:
+  /// **'Error Color'**
+  String get errorColor;
+
+  /// Header for the on error color selection
+  ///
+  /// In en, this message translates to:
+  /// **'On Error Color'**
+  String get onErrorColor;
+
+  /// OK button text
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// Cancel button text
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
 }
 
 class _AppLocalizationsDelegate

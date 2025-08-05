@@ -58,6 +58,9 @@ dependencies:
   # The "provider" package is used for state management.
   provider:
 
+  # The "flutter_colorpicker" package is used for color picking functionality.
+  flutter_colorpicker:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

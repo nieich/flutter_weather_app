@@ -62,4 +62,50 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get darkTheme => 'Dunkel';
+
+  @override
+  String get colorMode => 'Color Mode';
+
+  @override
+  String get colorModeSeed => 'Seed-Farbe';
+
+  @override
+  String get colorModeIndividual => 'Individuelle Farbe';
+
+  @override
+  String get individualColorMode => 'Individual Color Mode';
+
+  @override
+  String get individualColorModeDescription =>
+      'Select a custom color for each element in the app.';
+
+  @override
+  String get primaryColor => 'Primärfarbe';
+
+  @override
+  String get onPrimaryColor => 'Auf Primärfarbe';
+
+  @override
+  String get secondaryColor => 'Sekundärfarbe';
+
+  @override
+  String get onSecondaryColor => 'Auf Sekundärfarbe';
+
+  @override
+  String get surfaceColor => 'Oberflächenfarbe';
+
+  @override
+  String get onSurfaceColor => 'Auf Oberflächenfarbe';
+
+  @override
+  String get errorColor => 'Fehlerfarbe';
+
+  @override
+  String get onErrorColor => 'Auf Fehlerfarbe';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get cancel => 'Abbrechen';
 }

@@ -70,5 +70,57 @@
   "darkTheme": "Dunkel",
   "@darkTheme": {
     "description": "Dunkles Design für die App"
+  },
+  "ColorMode": "Farbmodus",
+  "@ColorMode": {
+    "description": "Überschrift für die Farbauswahl"
+  },
+  "colorModeSeed": "Seed-Farbe",
+  "@colorModeSeed": {
+    "description": "Seed-Farbe für den Farbmodus"
+  },
+  "colorModeIndividual": "Individuelle Farbe",
+  "@colorModeIndividual": {
+    "description": "Individuelle Farbe für den Farbmodus"
+  },
+  "primaryColor": "Primärfarbe",
+  "@primaryColor": {
+    "description": "Header für die Primärfarbe Auswahl"
+  },
+  "onPrimaryColor": "Auf Primärfarbe",
+  "@onPrimaryColor": {
+    "description": "Header für die Primärfarbe Auswahl"
+  },
+  "secondaryColor": "Sekundärfarbe",
+  "@secondaryColor": {
+    "description": "Header für die Sekundärfarbe Auswahl"
+  },
+  "onSecondaryColor": "Auf Sekundärfarbe",
+  "@onSecondaryColor": {
+    "description": "Header für die Sekundärfarbe Auswahl"
+  },
+  "surfaceColor": "Oberflächenfarbe",
+  "@surfaceColor": {
+    "description": "Header für die Oberflächenfarbe Auswahl"
+  },
+  "onSurfaceColor": "Auf Oberflächenfarbe",
+  "@onSurfaceColor": {
+    "description": "Header für die Oberflächenfarbe Auswahl"
+  },
+  "errorColor": "Fehlerfarbe",
+  "@errorColor": {
+    "description": "Header für die Fehlerfarbe Auswahl"
+  },
+  "onErrorColor": "Auf Fehlerfarbe",
+  "@onErrorColor": {
+    "description": "Header für die Fehlerfarbe Auswahl"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK button text"
+  },
+  "cancel": "Abbrechen",
+  "@cancel": {
+    "description": "Abbrechen button text"
   }
 }

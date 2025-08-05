@@ -23,17 +23,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Weather App',
       // 1. define the light theme (Light Theme)
-      theme: ThemeData(
-        brightness: Brightness.light,
-        colorScheme: ColorScheme.fromSeed(seedColor: themeProvider.seedColor, brightness: Brightness.light),
-        useMaterial3: true,
-      ),
+      theme: ThemeData(brightness: Brightness.light, colorScheme: themeProvider.lightColorScheme, useMaterial3: true),
       // 2. define the dark theme (Dark Theme)
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        colorScheme: ColorScheme.fromSeed(seedColor: themeProvider.seedColor, brightness: Brightness.dark),
-        useMaterial3: true,
-      ),
+      darkTheme: ThemeData(brightness: Brightness.dark, colorScheme: themeProvider.darkColorScheme, useMaterial3: true),
       // 3. sage flutter, it should use the system theme
       themeMode: themeProvider.themeMode, // This could also be a setting
       localizationsDelegates: AppLocalizations.localizationsDelegates,
