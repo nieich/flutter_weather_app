@@ -181,6 +181,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose a color for the app design'**
   String get themeColorDescription;
+
+  /// Header for the theme mode selection
+  ///
+  /// In en, this message translates to:
+  /// **'Theme Mode'**
+  String get themeMode;
+
+  /// Use the system's default theme
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get systemTheme;
+
+  /// Light theme for the app
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get lightTheme;
+
+  /// Dark theme for the app
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get darkTheme;
 }
 
 class _AppLocalizationsDelegate

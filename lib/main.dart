@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // 3. sage flutter, it should use the system theme
-      themeMode: ThemeMode.system, // This could also be a setting
+      themeMode: themeProvider.themeMode, // This could also be a setting
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: router,

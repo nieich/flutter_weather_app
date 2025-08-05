@@ -50,4 +50,16 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get themeColorDescription =>
       'Wähle eine Akzentfarbe, um das Farbschema der App zu generieren.';
+
+  @override
+  String get themeMode => 'Design-Modus';
+
+  @override
+  String get systemTheme => 'System';
+
+  @override
+  String get lightTheme => 'Hell';
+
+  @override
+  String get darkTheme => 'Dunkel';
 }

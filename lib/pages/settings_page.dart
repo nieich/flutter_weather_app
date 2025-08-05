@@ -41,6 +41,23 @@ class SettingsPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
+          Text(l10n.themeMode, style: Theme.of(context).textTheme.titleLarge),
+          const SizedBox(height: 16),
+          DropdownButtonFormField<ThemeMode>(
+            value: themeProvider.themeMode,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            ),
+            items: ThemeMode.values.map((mode) {
+              return DropdownMenuItem(value: mode, child: Text(_getThemeModeName(mode, l10n)));
+            }).toList(),
+            onChanged: (value) {
+              if (value != null) {
+                themeProvider.setThemeMode(value);
+              }
+            },
+          ),
           Text(l10n.themeColor, style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 8),
           Text(l10n.themeColorDescription, style: Theme.of(context).textTheme.bodyMedium),
@@ -64,5 +81,20 @@ class SettingsPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getThemeModeName(ThemeMode mode, AppLocalizations l10n) {
+    // You will need to add the corresponding keys to your .arb files.
+    switch (mode) {
+      case ThemeMode.system:
+        // e.g., "systemTheme": "System Default"
+        return l10n.systemTheme;
+      case ThemeMode.light:
+        // e.g., "lightTheme": "Light"
+        return l10n.lightTheme;
+      case ThemeMode.dark:
+        // e.g., "darkTheme": "Dark"
+        return l10n.darkTheme;
+    }
   }
 }

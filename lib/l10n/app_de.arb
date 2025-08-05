@@ -54,5 +54,21 @@
   "themeColorDescription": "Wähle eine Akzentfarbe, um das Farbschema der App zu generieren.",
   "@themeColorDescription": {
     "description": "Beschreibung für die Farbauswahl"
+  },
+  "themeMode": "Design-Modus",
+  "@themeMode": {
+    "description": "Überschrift für die Design-Modus-Auswahl"
+  },
+  "systemTheme": "System",
+  "@systemTheme": {
+    "description": "System Standard Design-Modus"
+  },
+  "lightTheme": "Hell",
+  "@lightTheme": {
+    "description": "Helles Design für die App"
+  },
+  "darkTheme": "Dunkel",
+  "@darkTheme": {
+    "description": "Dunkles Design für die App"
   }
 }

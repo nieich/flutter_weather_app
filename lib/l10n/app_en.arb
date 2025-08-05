@@ -54,6 +54,21 @@
   "themeColorDescription": "Choose a color for the app design",
   "@themeColorDescription": {
     "description": "Description for the theme color selection"
+  },
+  "themeMode": "Theme Mode",
+  "@themeMode": {
+    "description": "Header for the theme mode selection"
+  },
+  "systemTheme": "System",
+  "@systemTheme": {
+    "description": "Use the system's default theme"
+  },
+  "lightTheme": "Light",
+  "@lightTheme": {
+    "description": "Light theme for the app"
+  },
+  "darkTheme": "Dark",
+  "@darkTheme": {
+    "description": "Dark theme for the app"
   }
-
 }
