@@ -37,6 +37,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
+  # The "logging" package is used for logging messages in the application.
+  logging:
+
   # The "go_router" package below is used for routing in the application.
   go_router:
 

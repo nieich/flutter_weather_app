@@ -59,7 +59,14 @@ class DailyWeatherData {
   });
 
   Map<String, dynamic> toJson() {
-    return {'day': day.toIso8601String(), 'maxTemp': maxTemp, 'minTemp': minTemp, 'condition': condition};
+    return {
+      'day': day.toIso8601String(),
+      'maxTemp': maxTemp,
+      'minTemp': minTemp,
+      'minPrecipitationProbability': minPrecipitationProbability,
+      'maxPrecipitationProbability': maxPrecipitationProbability,
+      'condition': condition,
+    };
   }
 
   factory DailyWeatherData.fromJson(Map<String, dynamic> json) {

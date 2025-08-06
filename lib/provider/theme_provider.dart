@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum ColorMode { individual, seed }
@@ -85,8 +86,10 @@ class ThemeProvider with ChangeNotifier {
   }
 
   void _loadTheme() async {
+    final logger = Logger('ThemeProvider');
     final prefs = await SharedPreferences.getInstance();
     final colorValue = prefs.getInt(_themeColorKey);
+
     if (colorValue != null) {
       _seedColor = Color(colorValue);
     }
@@ -97,7 +100,7 @@ class ThemeProvider with ChangeNotifier {
         _themeMode = ThemeMode.values.byName(themeModeName);
       } catch (e) {
         // If the theme mode is not recognized, default to system.
-        print('Unknown theme mode: $themeModeName, defaulting to system.');
+        logger.info('Unknown theme mode: $themeModeName, defaulting to system.');
         _themeMode = ThemeMode.system;
       }
     }
@@ -108,13 +111,13 @@ class ThemeProvider with ChangeNotifier {
         _colorMode = ColorMode.values.byName(colorModeName);
       } catch (e) {
         // If the color mode is not recognized, default to seed.
-        print('Unknown color mode: $colorModeName, defaulting to seed.');
+        logger.info('Unknown color mode: $colorModeName, defaulting to seed.');
         _colorMode = ColorMode.seed;
       }
     }
 
     // Helper to reduce repetition when loading colors.
-    Color getColor(String key, Color defaultColor) => Color(prefs.getInt(key) ?? defaultColor.value);
+    Color getColor(String key, Color defaultColor) => Color(prefs.getInt(key) ?? defaultColor.toARGB32());
 
     _primary = getColor(_primaryColorKey, Colors.blueAccent);
     _onPrimary = getColor(_onPrimaryColorKey, Colors.black);

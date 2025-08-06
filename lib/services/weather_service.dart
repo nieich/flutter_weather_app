@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_weather_app/model/weather_model.dart';
 import 'package:intl/intl.dart';
+import 'package:logging/logging.dart';
 
 final String _baseUrl = "https://api.brightsky.dev/";
 final String _curWeather = "current_weather";
@@ -11,7 +12,8 @@ class WeatherService {
   // Main method that retrieves all weather data.
   // Executes the API calls for current weather and forecast in parallel.
   Future<WeatherData> fetchWeather(double lat, double lon) async {
-    print('Fetching weather data for lat: $lat, lon: $lon');
+    Logger logger = Logger('WeatherService');
+    logger.info('Fetching weather data for lat: $lat, lon: $lon');
     try {
       // Start both network requests at the same time and wait until both are completed.
       final results = await Future.wait([_fetchCurrentWeather(lat, lon), _fetchFullForecast(lat, lon)]);

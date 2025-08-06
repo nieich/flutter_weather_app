@@ -1,8 +1,10 @@
 import 'package:flutter_weather_app/model/weather_model.dart';
+import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WeatherCacheService {
   static const _weatherCacheKey = 'weather_data_cache';
+  static final logger = Logger('WeatherCacheService');
 
   /// Saves the weather data as a JSON string in the SharedPreferences.
   Future<void> saveWeatherData(WeatherData data) async {
@@ -12,7 +14,7 @@ class WeatherCacheService {
       await prefs.setString(_weatherCacheKey, jsonString);
     } catch (e) {
       // Errors when saving could be logged, but should not cause the app to crash.
-      print('Fehler beim Speichern der Wetterdaten im Cache: $e');
+      logger.warning('Fehler beim Speichern der Wetterdaten im Cache: $e');
     }
   }
 
@@ -24,7 +26,7 @@ class WeatherCacheService {
       final jsonString = prefs.getString(_weatherCacheKey);
       return jsonString != null ? WeatherData.fromJsonString(jsonString) : null;
     } catch (e) {
-      print('Fehler beim Laden der Wetterdaten aus dem Cache: $e');
+      logger.warning('Fehler beim Laden der Wetterdaten aus dem Cache: $e');
       return null;
     }
   }

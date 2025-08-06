@@ -1,0 +1,8 @@
+{
+  "de": [
+    "colorMode",
+    "individualColorMode",
+    "individualColorModeDescription",
+    "theme"
+  ]
+}

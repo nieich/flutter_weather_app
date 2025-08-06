@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'package:flutter_weather_app/model/forecast_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:logging/logging.dart';
 
 /// Service for retrieving weather forecast data from the Open-Meteo API.
 class ForecastService {
   /// Retrieves the weather data for the given coordinates.
   Future<Forecast> fetchWeather(double lat, double lon) async {
-    print('Fetching weather data for lat: $lat, lon: $lon');
+    Logger logger = Logger('ForecastService');
+    logger.info('Fetching weather data for lat: $lat, lon: $lon');
     try {
       // We now build the URL securely and dynamically with Uri.https.
       // This is better than string manipulation, as it handles special characters correctly, for example.
