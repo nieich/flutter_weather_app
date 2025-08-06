@@ -103,8 +103,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onErrorColor => 'On Error Color';
 
   @override
+  String get theme => 'Theme';
+
+  @override
+  String get error => 'Error';
+
+  @override
   String get ok => 'OK';
 
   @override
   String get cancel => 'Cancel';
+
+  @override
+  String get pullDownToRefresh => 'Pull down to refresh the weather data.';
+
+  @override
+  String get noWeatherDataAvail => 'No weather data available.';
+
+  @override
+  String get weatherDataRefreshFailed => 'Failed to refresh weather data.';
 }

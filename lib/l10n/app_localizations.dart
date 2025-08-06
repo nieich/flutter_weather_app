@@ -284,6 +284,18 @@ abstract class AppLocalizations {
   /// **'On Error Color'**
   String get onErrorColor;
 
+  /// Header for the theme selection
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// Error message displayed when something goes wrong
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
   /// OK button text
   ///
   /// In en, this message translates to:
@@ -295,6 +307,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancel;
+
+  /// Description for the pull down to refresh action
+  ///
+  /// In en, this message translates to:
+  /// **'Pull down to refresh the weather data.'**
+  String get pullDownToRefresh;
+
+  /// Description for the no weather data message
+  ///
+  /// In en, this message translates to:
+  /// **'No weather data available.'**
+  String get noWeatherDataAvail;
+
+  /// Description for the weather data refresh failure message
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to refresh weather data.'**
+  String get weatherDataRefreshFailed;
 }
 
 class _AppLocalizationsDelegate

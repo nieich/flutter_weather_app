@@ -104,8 +104,25 @@ class AppLocalizationsDe extends AppLocalizations {
   String get onErrorColor => 'Auf Fehlerfarbe';
 
   @override
+  String get theme => 'Theme';
+
+  @override
+  String get error => 'Fehler';
+
+  @override
   String get ok => 'OK';
 
   @override
   String get cancel => 'Abbrechen';
+
+  @override
+  String get pullDownToRefresh =>
+      'Ziehen Sie nach unten, um die Wetterdaten zu aktualisieren.';
+
+  @override
+  String get noWeatherDataAvail => 'Keine Wetterdaten verfügbar.';
+
+  @override
+  String get weatherDataRefreshFailed =>
+      'Aktualisierung der Wetterdaten fehlgeschlagen.';
 }

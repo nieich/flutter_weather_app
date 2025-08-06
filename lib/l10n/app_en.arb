@@ -123,6 +123,14 @@
   "@onErrorColor": {
     "description": "Header for the on error color selection"
   },
+  "theme": "Theme",
+  "@theme": {
+    "description": "Header for the theme selection"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Error message displayed when something goes wrong"
+  },
   "ok": "OK",
   "@ok": {
     "description": "OK button text"
@@ -130,6 +138,17 @@
   "cancel": "Cancel",
   "@cancel": {
     "description": "Cancel button text"
+  },
+  "pullDownToRefresh":"Pull down to refresh the weather data.",
+  "@pullDownToRefresh": {
+    "description": "Description for the pull down to refresh action"
+  },
+  "noWeatherDataAvail": "No weather data available.",
+  "@noWeatherDataAvail": {
+    "description": "Description for the no weather data message"
+  },
+  "weatherDataRefreshFailed": "Failed to refresh weather data.",
+  "@weatherDataRefreshFailed": {
+    "description": "Description for the weather data refresh failure message"
   }
-
 }

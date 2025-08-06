@@ -115,12 +115,28 @@
   "@onErrorColor": {
     "description": "Header für die Fehlerfarbe Auswahl"
   },
+  "error": "Fehler",
+  "@error": {
+    "description": "Fehlermeldung, die angezeigt wird, wenn etwas schiefgeht"
+  },
   "ok": "OK",
   "@ok": {
-    "description": "OK button text"
+    "description": "OK Schaltflächentext"
   },
   "cancel": "Abbrechen",
   "@cancel": {
-    "description": "Abbrechen button text"
+    "description": "Abbrechen Schaltflächentext"
+  },
+  "pullDownToRefresh":"Ziehen Sie nach unten, um die Wetterdaten zu aktualisieren.",
+  "@pullDownToRefresh": {
+    "description": "Beschreibung für die Aktion zum Aktualisieren der Wetterdaten durch Herunterziehen"
+  },
+  "noWeatherDataAvail": "Keine Wetterdaten verfügbar.",
+  "@noWeatherDataAvail": {
+    "description": "Beschreibung für die Nachricht, wenn keine Wetterdaten verfügbar sind"
+  },
+  "weatherDataRefreshFailed": "Aktualisierung der Wetterdaten fehlgeschlagen.",
+  "@weatherDataRefreshFailed": {
+    "description": "Beschreibung für die Fehlermeldung bei der Aktualisierung der Wetterdaten"
   }
 }

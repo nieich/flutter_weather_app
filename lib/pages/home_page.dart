@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_weather_app/l10n/app_localizations.dart';
 import 'package:flutter_weather_app/services/weather_cache_service.dart';
 import 'package:flutter_weather_app/services/location_service.dart';
 import 'package:flutter_weather_app/services/weather_service.dart';
@@ -17,6 +18,8 @@ class _HomePageState extends State<HomePage> {
   final WeatherService _weatherService = WeatherService();
   final WeatherCacheService _cacheService = WeatherCacheService();
 
+  late AppLocalizations l10n;
+
   WeatherData? _weatherData;
   bool _isLoading = true;
   String? _error;
@@ -25,6 +28,12 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _loadInitialData();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    l10n = AppLocalizations.of(context)!;
   }
 
   Future<void> _loadInitialData() async {
@@ -64,7 +73,7 @@ class _HomePageState extends State<HomePage> {
       }
     } catch (e) {
       if (mounted) {
-        final errorMessage = 'Fehler: $e';
+        final errorMessage = '${l10n.error}: $e';
         // Only display the error if no old data is available.
         if (_weatherData == null) {
           setState(() {
@@ -72,16 +81,18 @@ class _HomePageState extends State<HomePage> {
           });
         }
         // Inform the user about the failed refresh.
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Aktualisierung der Wetterdaten fehlgeschlagen.')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.weatherDataRefreshFailed)));
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(padding: const EdgeInsets.all(16.0), child: _buildContent());
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      //decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface),
+      child: _buildContent(),
+    );
   }
 
   Widget _buildContent() {
@@ -96,7 +107,7 @@ class _HomePageState extends State<HomePage> {
         onRefresh: _refreshWeatherData,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: Center(heightFactor: 5, child: Text('$_error\n\nZum Aktualisieren nach unten ziehen.')),
+          child: Center(heightFactor: 5, child: Text('$_error\n\n${l10n.pullDownToRefresh}')),
         ),
       );
     }
@@ -110,6 +121,6 @@ class _HomePageState extends State<HomePage> {
     }
 
     // Fallback if no data is available.
-    return const Center(child: Text('Keine Wetterdaten verfügbar.'));
+    return Center(child: Text(l10n.noWeatherDataAvail));
   }
 }

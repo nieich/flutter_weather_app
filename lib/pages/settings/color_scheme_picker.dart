@@ -82,93 +82,49 @@ class IndividualColorPicker extends StatelessWidget {
         const SizedBox(height: 16),
 
         // Light Theme Section
-        Text(l10n.lightTheme, style: Theme.of(context).textTheme.titleMedium),
+        Text(l10n.theme, style: Theme.of(context).textTheme.titleMedium),
         const Divider(),
         _ColorPickerTile(
           title: l10n.primaryColor, // e.g., "Primary Color"
-          currentColor: themeProvider.lightPrimary,
-          onColorChanged: themeProvider.setLightPrimary,
-        ),
-        _ColorPickerTile(
-          title: l10n.secondaryColor, // e.g., "Secondary Color"
-          currentColor: themeProvider.lightSecondary,
-          onColorChanged: themeProvider.setLightSecondary,
-        ),
-        _ColorPickerTile(
-          title: l10n.surfaceColor, // e.g., "Surface Color"
-          currentColor: themeProvider.lightSurface,
-          onColorChanged: themeProvider.setLightSurface,
-        ),
-        _ColorPickerTile(
-          title: l10n.onSurfaceColor, // e.g., "On Surface Color"
-          currentColor: themeProvider.lightOnSurface,
-          onColorChanged: themeProvider.setLightOnSurface,
+          currentColor: themeProvider.primary,
+          onColorChanged: themeProvider.setPrimary,
         ),
         _ColorPickerTile(
           title: l10n.onPrimaryColor, // e.g., "On Primary Color"
-          currentColor: themeProvider.lightOnPrimary,
-          onColorChanged: themeProvider.setLightOnPrimary,
+          currentColor: themeProvider.onPrimary,
+          onColorChanged: themeProvider.setOnPrimary,
+        ),
+        _ColorPickerTile(
+          title: l10n.secondaryColor, // e.g., "Secondary Color"
+          currentColor: themeProvider.secondary,
+          onColorChanged: themeProvider.setSecondary,
         ),
         _ColorPickerTile(
           title: l10n.onSecondaryColor, // e.g., "On Secondary Color"
-          currentColor: themeProvider.lightOnSecondary,
-          onColorChanged: themeProvider.setLightOnSecondary,
+          currentColor: themeProvider.onSecondary,
+          onColorChanged: themeProvider.setOnSecondary,
+        ),
+        _ColorPickerTile(
+          title: l10n.surfaceColor, // e.g., "Surface Color"
+          currentColor: themeProvider.surface,
+          onColorChanged: themeProvider.setSurface,
+        ),
+        _ColorPickerTile(
+          title: l10n.onSurfaceColor, // e.g., "On Surface Color"
+          currentColor: themeProvider.onSurface,
+          onColorChanged: themeProvider.setOnSurface,
         ),
         _ColorPickerTile(
           title: l10n.errorColor, // e.g., "Error Color"
-          currentColor: themeProvider.lightError,
-          onColorChanged: themeProvider.setLightError,
+          currentColor: themeProvider.error,
+          onColorChanged: themeProvider.setError,
         ),
         _ColorPickerTile(
           title: l10n.onErrorColor, // e.g., "On Error Color"
-          currentColor: themeProvider.lightOnError,
-          onColorChanged: themeProvider.setLightOnError,
+          currentColor: themeProvider.onError,
+          onColorChanged: themeProvider.setOnError,
         ),
         const SizedBox(height: 24),
-
-        // Dark Theme Section
-        Text(l10n.darkTheme, style: Theme.of(context).textTheme.titleMedium),
-        const Divider(),
-        _ColorPickerTile(
-          title: l10n.primaryColor,
-          currentColor: themeProvider.darkPrimary,
-          onColorChanged: themeProvider.setDarkPrimary,
-        ),
-        _ColorPickerTile(
-          title: l10n.onPrimaryColor,
-          currentColor: themeProvider.darkOnPrimary,
-          onColorChanged: themeProvider.setDarkOnPrimary,
-        ),
-        _ColorPickerTile(
-          title: l10n.secondaryColor,
-          currentColor: themeProvider.darkSecondary,
-          onColorChanged: themeProvider.setDarkSecondary,
-        ),
-        _ColorPickerTile(
-          title: l10n.onSecondaryColor,
-          currentColor: themeProvider.darkOnSecondary,
-          onColorChanged: themeProvider.setDarkOnSecondary,
-        ),
-        _ColorPickerTile(
-          title: l10n.surfaceColor,
-          currentColor: themeProvider.darkSurface,
-          onColorChanged: themeProvider.setDarkSurface,
-        ),
-        _ColorPickerTile(
-          title: l10n.onSurfaceColor,
-          currentColor: themeProvider.darkOnSurface,
-          onColorChanged: themeProvider.setDarkOnSurface,
-        ),
-        _ColorPickerTile(
-          title: l10n.errorColor,
-          currentColor: themeProvider.darkError,
-          onColorChanged: themeProvider.setDarkError,
-        ),
-        _ColorPickerTile(
-          title: l10n.onErrorColor,
-          currentColor: themeProvider.darkOnError,
-          onColorChanged: themeProvider.setDarkOnError,
-        ),
       ],
     );
   }

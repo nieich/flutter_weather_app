@@ -79,17 +79,21 @@ ListView buildWeatherView(BuildContext context, weatherData, Size size, ThemeDat
               margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
               child: Container(
                 width: 100,
+                decoration: BoxDecoration(color: theme.colorScheme.secondary, borderRadius: BorderRadius.circular(8.0)),
                 padding: const EdgeInsets.all(12.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
                       hourlyData.time,
-                      style: TextStyle(fontSize: 16, color: theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 16, color: theme.colorScheme.onSecondary, fontWeight: FontWeight.bold),
                     ),
                     Text('${hourlyData.precipitationProbability}%', style: TextStyle(color: Colors.blue)),
-                    Icon(hourlyCondition.icon, size: 32, color: theme.colorScheme.primary),
-                    Text('${hourlyData.temperature}°C', style: const TextStyle(fontSize: 18)),
+                    Icon(hourlyCondition.icon, size: 32, color: theme.colorScheme.onSecondary),
+                    Text(
+                      '${hourlyData.temperature}°C',
+                      style: TextStyle(fontSize: 18, color: theme.colorScheme.onSecondary),
+                    ),
                   ],
                 ),
               ),
