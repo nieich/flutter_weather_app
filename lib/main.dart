@@ -21,7 +21,11 @@ class MyApp extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return MaterialApp.router(
-      title: 'Weather App',
+      onGenerateTitle: (context) {
+        // This context is a descendant of MaterialApp and has access to AppLocalizations.
+        final l10n = AppLocalizations.of(context)!;
+        return l10n.title;
+      },
       // 1. define the light theme (Light Theme)
       theme: ThemeData(brightness: Brightness.light, colorScheme: themeProvider.lightColorScheme, useMaterial3: true),
       // 2. define the dark theme (Dark Theme)
