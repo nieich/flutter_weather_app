@@ -1,16 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:flutter_weather_app/l10n/app_localizations.dart';
-import 'package:flutter_weather_app/utils/weather_condition_enum.dart';
-import 'package:flutter_weather_app/widgets/daily_forecast_precipitation_chart.dart';
+import 'package:flutter_weather_app/model/forecast_model.dart';
+import 'package:flutter_weather_app/utils/weather_code_enum.dart';
 import 'package:flutter_weather_app/widgets/daily_forecast_temp_chart.dart';
-import 'package:flutter_weather_app/utils/hourly_weather_condition_enum.dart';
 import 'package:intl/intl.dart';
 import 'dart:math' as math;
 
-ListView buildWeatherView(BuildContext context, weatherData, Size size, ThemeData theme) {
+/// Formats the location name from a [Placemark] object for display.
+String _formatLocation(Placemark? placemark) {
+  if (placemark == null) return '...';
+  // Prioritize city, then county, then state. Fallback to a generic message.
+  return placemark.locality ?? placemark.subAdministrativeArea ?? placemark.administrativeArea ?? 'Unknown Location';
+}
+
+ListView buildWeatherView(
+  BuildContext context,
+  Forecast forecastData,
+  Placemark? placemark,
+  Size size,
+  ThemeData theme,
+) {
   final random = math.Random();
   final randomImageIndex = random.nextInt(2) + 1; // Zufällige Zahl zwischen 1 und 2
-  final imagePath = WeatherCondition.fromString(weatherData.icon).assetPath.replaceAll('_X', '_$randomImageIndex');
+  final imagePath = WeatherCode.fromCode(
+    forecastData.current?.weatherCode,
+  ).assetPath.replaceAll('_X', '_$randomImageIndex');
+
+  // Filter hourly data to show the next 24 hours starting from the current hour.
+  final now = DateTime.now();
+  final currentHour = DateTime(now.year, now.month, now.day, now.hour);
+  final hourly = forecastData.hourly;
+  List<int> hourlyIndices = [];
+
+  if (hourly?.time != null && hourly!.time!.isNotEmpty) {
+    // Find the index of the first forecast entry that is not before the current hour.
+    final startIndex = hourly.time!.indexWhere((timeString) {
+      return !DateTime.parse(timeString).isBefore(currentHour.add(const Duration(hours: 1)));
+    });
+
+    if (startIndex != -1) {
+      final endIndex = math.min(startIndex + 24, hourly.time!.length);
+      hourlyIndices = List.generate(endIndex - startIndex, (i) => startIndex + i);
+    }
+  }
 
   return ListView(
     children: [
@@ -24,7 +57,7 @@ ListView buildWeatherView(BuildContext context, weatherData, Size size, ThemeDat
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '${weatherData.temperature}°C',
+            '${forecastData.current?.temperature2m}${forecastData.currentUnits?.temperature2m}',
             style: TextStyle(fontSize: 40, color: theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
           ),
         ],
@@ -37,26 +70,51 @@ ListView buildWeatherView(BuildContext context, weatherData, Size size, ThemeDat
           ),
         ],
       ),
-      Row(children: [Text(weatherData.stationName, style: theme.textTheme.headlineSmall)]),
+      Row(children: [Text(_formatLocation(placemark), style: theme.textTheme.headlineSmall)]),
       Text(AppLocalizations.of(context)!.details),
       Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              buildInfoTile('${weatherData.temperature}°C', AppLocalizations.of(context)!.temperature, size, theme),
-              buildInfoTile('${weatherData.windSpeed} m/s', AppLocalizations.of(context)!.windSpeed, size, theme),
-              buildInfoTile('${weatherData.humidity}%', AppLocalizations.of(context)!.humidity, size, theme),
+              buildInfoTile(
+                '${forecastData.current?.temperature2m}${forecastData.currentUnits?.temperature2m}',
+                AppLocalizations.of(context)!.temperature,
+                size,
+                theme,
+              ),
+              buildInfoTile(
+                '${forecastData.current?.windSpeed10m} ${forecastData.currentUnits?.windSpeed10m}',
+                AppLocalizations.of(context)!.windSpeed,
+                size,
+                theme,
+              ),
+              buildInfoTile(
+                '${forecastData.current?.relativeHumidity2m}${forecastData.currentUnits?.relativeHumidity2m}',
+                AppLocalizations.of(context)!.humidity,
+                size,
+                theme,
+              ),
             ],
           ),
           const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              buildInfoTile('${weatherData.pressure} hPa', AppLocalizations.of(context)!.pressure, size, theme),
-              buildInfoTile('${weatherData.dewPoint}°C', AppLocalizations.of(context)!.dewPoint, size, theme),
               buildInfoTile(
-                '${weatherData.visibility.toStringAsFixed(2)} km',
+                '${forecastData.current?.windDirection10m} ${forecastData.currentUnits?.windDirection10m}',
+                AppLocalizations.of(context)!.pressure,
+                size,
+                theme,
+              ),
+              buildInfoTile(
+                '${forecastData.current?.precipitation}${forecastData.currentUnits?.precipitation}',
+                AppLocalizations.of(context)!.dewPoint,
+                size,
+                theme,
+              ),
+              buildInfoTile(
+                '${forecastData.current?.cloudCover} ${forecastData.currentUnits?.cloudCover}',
                 AppLocalizations.of(context)!.visibility,
                 size,
                 theme,
@@ -71,10 +129,15 @@ ListView buildWeatherView(BuildContext context, weatherData, Size size, ThemeDat
         height: 160,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: weatherData.hourlyForecast.length,
-          itemBuilder: (context, index) {
-            final hourlyData = weatherData.hourlyForecast[index];
-            final hourlyCondition = HourlyWeatherCondition.fromString(hourlyData.condition);
+          itemCount: hourlyIndices.length,
+          itemBuilder: (context, i) {
+            final index = hourlyIndices[i];
+            final String time = DateFormat(
+              "HH:mm",
+              AppLocalizations.of(context)!.localeName,
+            ).format(DateTime.parse(forecastData.hourly!.time![index]));
+            final temperature = forecastData.hourly!.temperature2m![index];
+            final precipitationProbability = forecastData.hourly!.precipitationProbability![index];
             return Card(
               margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
               child: Container(
@@ -85,13 +148,16 @@ ListView buildWeatherView(BuildContext context, weatherData, Size size, ThemeDat
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      hourlyData.time,
+                      time,
                       style: TextStyle(fontSize: 16, color: theme.colorScheme.onSecondary, fontWeight: FontWeight.bold),
                     ),
-                    Text('${hourlyData.precipitationProbability}%', style: TextStyle(color: Colors.blue)),
-                    Icon(hourlyCondition.icon, size: 32, color: theme.colorScheme.onSecondary),
                     Text(
-                      '${hourlyData.temperature}°C',
+                      '$precipitationProbability${forecastData.hourlyUnits?.precipitationProbability}',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                    Icon(Icons.sunny, size: 32, color: theme.colorScheme.onSecondary),
+                    Text(
+                      '$temperature${forecastData.hourlyUnits?.temperature2m}',
                       style: TextStyle(fontSize: 18, color: theme.colorScheme.onSecondary),
                     ),
                   ],
@@ -103,12 +169,12 @@ ListView buildWeatherView(BuildContext context, weatherData, Size size, ThemeDat
       ),
       SizedBox(height: 10),
       Text(AppLocalizations.of(context)!.dailyTemp, style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface)),
-      DailyForecastTempChart(dailyForecast: weatherData.dailyForecast),
+      DailyForecastTempChart(dailyForecast: forecastData.daily!, dailyUnits: forecastData.dailyUnits!),
       Text(
         AppLocalizations.of(context)!.dailyPrecipitation,
         style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface),
       ),
-      DailyForecastPrecipitaionChart(dailyForecast: weatherData.dailyForecast),
+      //DailyForecastPrecipitaionChart(dailyForecast: forecastData.dailyForecast!),
     ],
   );
 }

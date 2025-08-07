@@ -6,7 +6,7 @@ import 'package:logging/logging.dart';
 /// Service for retrieving weather forecast data from the Open-Meteo API.
 class ForecastService {
   /// Retrieves the weather data for the given coordinates.
-  Future<Forecast> fetchWeather(double lat, double lon) async {
+  Future<Forecast> fetchForecast(double lat, double lon) async {
     Logger logger = Logger('ForecastService');
     logger.info('Fetching weather data for lat: $lat, lon: $lon');
     try {

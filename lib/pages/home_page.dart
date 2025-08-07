@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:flutter_weather_app/l10n/app_localizations.dart';
-import 'package:flutter_weather_app/services/weather_cache_service.dart';
+import 'package:flutter_weather_app/model/forecast_model.dart';
+import 'package:flutter_weather_app/services/forecast_cache_service.dart';
+import 'package:flutter_weather_app/services/forecast_service.dart';
 import 'package:flutter_weather_app/services/location_service.dart';
-import 'package:flutter_weather_app/services/weather_service.dart';
-import 'package:flutter_weather_app/model/weather_model.dart';
 import 'package:flutter_weather_app/views/weather_view.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,12 +16,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final LocationService _locationService = LocationService();
-  final WeatherService _weatherService = WeatherService();
-  final WeatherCacheService _cacheService = WeatherCacheService();
+  final ForecastService _forecastService = ForecastService();
+  final ForcastCacheService _forecastCacheService = ForcastCacheService();
 
   late AppLocalizations l10n;
 
-  WeatherData? _weatherData;
+  Forecast? __forecastData;
+  Placemark? _placemark;
   bool _isLoading = true;
   String? _error;
 
@@ -38,10 +40,10 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadInitialData() async {
     // 1. load data from the cache to display it immediately.
-    final cachedData = await _cacheService.loadWeatherData();
+    final cachedData = await _forecastCacheService.loadWeatherData();
     if (mounted && cachedData != null) {
       setState(() {
-        _weatherData = cachedData;
+        __forecastData = cachedData;
         _isLoading = false; // We have data, the main load indicator can go.
       });
     }
@@ -60,14 +62,23 @@ class _HomePageState extends State<HomePage> {
   Future<void> _refreshWeatherData() async {
     try {
       final position = await _locationService.getCurrentPosition();
-      final freshData = await _weatherService.fetchWeather(position.latitude, position.longitude);
+
+      // Fetch forecast and placemark in parallel for better performance.
+      final results = await Future.wait([
+        _forecastService.fetchForecast(position.latitude, position.longitude),
+        _locationService.getPlacemark(position.latitude, position.longitude),
+      ]);
+
+      final freshData = results[0] as Forecast;
+      final placemark = results[1] as Placemark;
 
       // Save the new data in the cache.
-      await _cacheService.saveWeatherData(freshData);
+      await _forecastCacheService.saveForecastData(freshData);
 
       if (mounted) {
         setState(() {
-          _weatherData = freshData;
+          __forecastData = freshData;
+          _placemark = placemark;
           _error = null; // Reset error on success
         });
       }
@@ -75,7 +86,7 @@ class _HomePageState extends State<HomePage> {
       if (mounted) {
         final errorMessage = '${l10n.error}: $e';
         // Only display the error if no old data is available.
-        if (_weatherData == null) {
+        if (__forecastData == null) {
           setState(() {
             _error = errorMessage;
           });
@@ -97,12 +108,12 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildContent() {
     // Show a loading indicator when the app starts and there is no cache.
-    if (_isLoading && _weatherData == null) {
+    if (_isLoading && __forecastData == null) {
       return const Center(child: CircularProgressIndicator());
     }
 
     // Show an error message if something went wrong and we have no data.
-    if (_error != null && _weatherData == null) {
+    if (_error != null && __forecastData == null) {
       return RefreshIndicator(
         onRefresh: _refreshWeatherData,
         child: SingleChildScrollView(
@@ -113,10 +124,10 @@ class _HomePageState extends State<HomePage> {
     }
 
     // If we have data (from the cache or fresh), we display it.
-    if (_weatherData != null) {
+    if (__forecastData != null) {
       return RefreshIndicator(
         onRefresh: _refreshWeatherData,
-        child: buildWeatherView(context, _weatherData!, MediaQuery.of(context).size, Theme.of(context)),
+        child: buildWeatherView(context, __forecastData!, _placemark, MediaQuery.of(context).size, Theme.of(context)),
       );
     }
 

@@ -3,13 +3,14 @@ import 'dart:math' as math;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_app/l10n/app_localizations.dart';
-import 'package:flutter_weather_app/model/weather_model.dart';
+import 'package:flutter_weather_app/model/forecast_model.dart';
 import 'package:intl/intl.dart';
 
 class DailyForecastTempChart extends StatelessWidget {
-  final List<DailyWeatherData> dailyForecast;
+  final DailyData dailyForecast;
+  final DailyUnits dailyUnits;
 
-  const DailyForecastTempChart({super.key, required this.dailyForecast});
+  const DailyForecastTempChart({super.key, required this.dailyForecast, required this.dailyUnits});
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +29,27 @@ class DailyForecastTempChart extends StatelessWidget {
   }
 
   LineChartData mainData(BuildContext context) {
-    final minTemp = dailyForecast.map((e) => e.minTemp).reduce((a, b) => a < b ? a : b);
-    final maxTemp = dailyForecast.map((e) => e.maxTemp).reduce((a, b) => a > b ? a : b);
+    // Ensure we have data to draw. If not, return an empty chart.
+    final timeList = dailyForecast.time;
+    final minTemps = dailyForecast.temperature2mMin;
+    final maxTemps = dailyForecast.temperature2mMax;
+
+    if (timeList == null || timeList.isEmpty || minTemps == null || maxTemps == null) {
+      return LineChartData(); // Return empty data to avoid errors
+    }
+
+    final int dayCount = timeList.length;
+
+    // Find the min and max temperatures from the forecast lists.
+    final double minTemp = minTemps.reduce(math.min);
+    final double maxTemp = maxTemps.reduce(math.max);
 
     // Round the Y-axis boundaries to the nearest increment of 5 to ensure a clean display.
     // Also add a small padding so that the lines are not directly on the edge.
-    final double minY = math.min(0.0, ((minTemp - 2) / 5).floor() * 5.0);
+    final double minY = ((minTemp - 2) / 5).floor() * 5.0;
     final double maxYCandidate = ((maxTemp + 2) / 5).ceil() * 5.0;
-    // Ensure a minimum span of 30 so that the graph does not look too "flat".
-    const double minSpan = 30.0;
+    // Ensure a minimum span of 10 so that the graph does not look too "flat".
+    const double minSpan = 10.0;
     final double maxY = (maxYCandidate - minY) < minSpan ? minY + minSpan : maxYCandidate;
 
     return LineChartData(
@@ -61,7 +74,7 @@ class DailyForecastTempChart extends StatelessWidget {
             showTitles: true,
             reservedSize: 30,
             interval: 1,
-            getTitlesWidget: (value, meta) => bottomTitleWidgets(value, meta, context),
+            getTitlesWidget: (value, meta) => bottomTitleWidgets(value, meta, context, timeList),
           ),
         ),
         leftTitles: AxisTitles(
@@ -71,15 +84,21 @@ class DailyForecastTempChart extends StatelessWidget {
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
           getTooltipItems: (List<LineBarSpot> touchedSpots) {
-            bool first = true;
             return touchedSpots.map((spot) {
-              if (first) {
-                first = false;
-                final temp = dailyForecast[spot.x.toInt()].maxTemp;
-                return LineTooltipItem('max $temp°C', const TextStyle(color: Colors.red));
+              final index = spot.x.toInt();
+              // The spot's `barIndex` tells us if it's the max (0) or min (1) temp line.
+              if (spot.barIndex == 0) {
+                final temp = maxTemps[index];
+                return LineTooltipItem(
+                  'max $temp${dailyUnits.temperature2mMax}',
+                  const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                );
               } else {
-                final temp = dailyForecast[spot.x.toInt()].minTemp;
-                return LineTooltipItem('min $temp°C', const TextStyle(color: Colors.green));
+                final temp = minTemps[index];
+                return LineTooltipItem(
+                  'min $temp${dailyUnits.temperature2mMin}',
+                  const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                );
               }
             }).toList();
           },
@@ -87,32 +106,24 @@ class DailyForecastTempChart extends StatelessWidget {
       ),
       borderData: FlBorderData(show: true, border: Border.all(color: const Color(0xff37434d))),
       minX: 0,
-      maxX: (dailyForecast.length - 1).toDouble(),
+      maxX: (dayCount - 1).toDouble(),
       minY: minY,
       maxY: maxY,
       lineBarsData: [
         LineChartBarData(
-          spots: dailyForecast.asMap().entries.map((entry) {
-            return FlSpot(entry.key.toDouble(), entry.value.maxTemp);
-          }).toList(),
+          spots: List.generate(dayCount, (index) => FlSpot(index.toDouble(), maxTemps[index])),
           isCurved: true,
-          gradient: const LinearGradient(colors: [Colors.red, Colors.red]),
+          gradient: const LinearGradient(colors: [Colors.red, Colors.orange]),
           barWidth: 5,
           isStrokeCapRound: true,
           dotData: const FlDotData(show: false),
           belowBarData: BarAreaData(
             show: true,
-            gradient: LinearGradient(
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              colors: [Colors.orange.withValues(alpha: 0.3), Colors.red.withValues(alpha: 0.3)],
-            ),
+            gradient: LinearGradient(colors: [Colors.orange.withOpacity(0.3), Colors.red.withOpacity(0.3)]),
           ),
         ),
         LineChartBarData(
-          spots: dailyForecast.asMap().entries.map((entry) {
-            return FlSpot(entry.key.toDouble(), entry.value.minTemp);
-          }).toList(),
+          spots: List.generate(dayCount, (index) => FlSpot(index.toDouble(), minTemps[index])),
           isCurved: true,
           gradient: const LinearGradient(colors: [Colors.greenAccent, Colors.green]),
           barWidth: 5,
@@ -120,21 +131,19 @@ class DailyForecastTempChart extends StatelessWidget {
           dotData: const FlDotData(show: false),
           belowBarData: BarAreaData(
             show: true,
-            gradient: LinearGradient(
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              colors: [Colors.greenAccent.withValues(alpha: 0.3), Colors.green.withValues(alpha: 0.3)],
-            ),
+            gradient: LinearGradient(colors: [Colors.greenAccent.withOpacity(0.3), Colors.green.withOpacity(0.3)]),
           ),
         ),
       ],
     );
   }
 
-  Widget bottomTitleWidgets(double value, TitleMeta meta, BuildContext context) {
-    final day = dailyForecast[value.toInt()].day;
+  Widget bottomTitleWidgets(double value, TitleMeta meta, BuildContext context, List<String> timeList) {
+    final dayString = timeList[value.toInt()];
+    final day = DateTime.parse(dayString);
     return SideTitleWidget(
       meta: meta,
+      space: 8.0,
       child: Text(
         DateFormat('E', AppLocalizations.of(context)!.localeName).format(day),
         style: const TextStyle(color: Colors.white70, fontSize: 12),
@@ -143,8 +152,9 @@ class DailyForecastTempChart extends StatelessWidget {
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
+    final unit = dailyUnits.temperature2mMax ?? '°';
     return Text(
-      '${value.toInt()}°',
+      '${value.toInt()}$unit',
       style: const TextStyle(color: Colors.white70, fontSize: 12),
       textAlign: TextAlign.left,
     );

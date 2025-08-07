@@ -1,4 +1,6 @@
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:logging/logging.dart';
 
 class LocationService {
   /// Bestimmt die aktuelle Position des Geräts.
@@ -35,5 +37,20 @@ class LocationService {
     // Wenn wir hier ankommen, sind die Berechtigungen erteilt und wir können
     // auf die Position des Geräts zugreifen.
     return await Geolocator.getCurrentPosition();
+  }
+
+  /// Converts latitude and longitude into a placemark with address details.
+  Future<Placemark> getPlacemark(double latitude, double longitude) async {
+    final Logger logger = Logger('LocationService');
+    try {
+      logger.info('Fetching placemark for lat: $latitude, lon: $longitude');
+
+      List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+      // The first placemark is usually the most relevant.
+      return placemarks.first;
+    } catch (e) {
+      // Handle potential errors, e.g., network issues or no results found.
+      throw Exception('Failed to get placemark: $e');
+    }
   }
 }

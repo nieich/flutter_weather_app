@@ -149,6 +149,8 @@ class CurrentData {
   final String? time;
   // Represents the interval of the current data in [CurrentUnits.interval].
   final int? interval;
+  // Represents the wmo code
+  final int? weatherCode;
   // Represents the temperature at 2 meters above ground level.
   final double? temperature2m;
   // Represents the relative humidity at 2 meters above ground level.
@@ -166,6 +168,7 @@ class CurrentData {
   CurrentData({
     this.time,
     this.interval,
+    this.weatherCode,
     this.temperature2m,
     this.relativeHumidity2m,
     this.precipitation,
@@ -178,6 +181,7 @@ class CurrentData {
     return CurrentData(
       time: json['time'] as String?,
       interval: json['interval'] as int?,
+      weatherCode: json['wmo_code'] as int?,
       temperature2m: (json['temperature_2m'] as num?)?.toDouble(),
       relativeHumidity2m: json['relative_humidity_2m'] as int?,
       precipitation: (json['precipitation'] as num?)?.toDouble(),

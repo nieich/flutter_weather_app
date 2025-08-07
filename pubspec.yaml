@@ -55,6 +55,9 @@ dependencies:
   # The "geolocator" package is used for getting the current location.
   geolocator:
 
+  # The "geocoding" package is used for getting the address from a location.
+  geocoding:
+
   # The "shared_prefearences" package is used for storing simple data locally.
   shared_preferences:
 
