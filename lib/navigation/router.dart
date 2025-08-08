@@ -14,7 +14,11 @@ final router = GoRouter(
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
-        return ScaffoldWithDrawer(navigationShell: navigationShell);
+        // Übergeben Sie den fullPath des aktuellen GoRoute an Ihre Scaffold-Komponente.
+        return ScaffoldWithDrawer(
+          navigationShell: navigationShell,
+          currentRoutePath: state.fullPath,
+        );
       },
       branches: [
         StatefulShellBranch(
@@ -24,14 +28,12 @@ final router = GoRouter(
               builder: (context, state) {
                 return const HomePage();
               },
-              routes: [
-                GoRoute(
-                  path: Routes.settings,
-                  builder: (context, state) {
-                    return const SettingsPage();
-                  },
-                ),
-              ],
+            ),
+            GoRoute(
+              path: Routes.settings,
+              builder: (context, state) {
+                return const SettingsPage();
+              },
             ),
           ],
         ),

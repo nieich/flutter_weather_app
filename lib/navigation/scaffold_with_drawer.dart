@@ -6,27 +6,31 @@ import 'package:intl/intl.dart';
 
 class ScaffoldWithDrawer extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
-  const ScaffoldWithDrawer({required this.navigationShell, Key? key})
+  final String? currentRoutePath;
+
+  const ScaffoldWithDrawer({required this.navigationShell, required this.currentRoutePath, Key? key})
     : super(key: key ?? const ValueKey<String>('ScaffoldWithDrawer'));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          DateFormat("HH:mm", AppLocalizations.of(context)!.localeName).format(DateTime.now()),
-          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-        ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.settings, color: Theme.of(context).colorScheme.onPrimary),
-            onPressed: () {
-              context.push(Routes.pathSettings);
-            },
-          ),
-        ],
-      ),
+      appBar: (currentRoutePath != Routes.settings)
+          ? AppBar(
+              title: Text(
+                DateFormat("HH:mm", AppLocalizations.of(context)!.localeName).format(DateTime.now()),
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+              ),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.settings, color: Theme.of(context).colorScheme.onPrimary),
+                  onPressed: () {
+                    context.push(Routes.pathSettings);
+                  },
+                ),
+              ],
+            )
+          : null,
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: navigationShell,
     );
