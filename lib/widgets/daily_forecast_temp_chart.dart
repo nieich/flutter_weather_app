@@ -119,7 +119,7 @@ class DailyForecastTempChart extends StatelessWidget {
           dotData: const FlDotData(show: false),
           belowBarData: BarAreaData(
             show: true,
-            gradient: LinearGradient(colors: [Colors.orange.withOpacity(0.3), Colors.red.withOpacity(0.3)]),
+            gradient: LinearGradient(colors: [Colors.orange.withValues(alpha: 0.3), Colors.red.withValues(alpha: 0.3)]),
           ),
         ),
         LineChartBarData(
@@ -131,7 +131,9 @@ class DailyForecastTempChart extends StatelessWidget {
           dotData: const FlDotData(show: false),
           belowBarData: BarAreaData(
             show: true,
-            gradient: LinearGradient(colors: [Colors.greenAccent.withOpacity(0.3), Colors.green.withOpacity(0.3)]),
+            gradient: LinearGradient(
+              colors: [Colors.greenAccent.withValues(alpha: 0.3), Colors.green.withValues(alpha: 0.3)],
+            ),
           ),
         ),
       ],
@@ -152,7 +154,7 @@ class DailyForecastTempChart extends StatelessWidget {
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
-    final unit = dailyUnits.temperature2mMax ?? '°';
+    final unit = dailyUnits.temperature2mMax ?? '°C';
     return Text(
       '${value.toInt()}$unit',
       style: const TextStyle(color: Colors.white70, fontSize: 12),

@@ -6,8 +6,9 @@ import 'package:flutter_weather_app/l10n/app_localizations.dart';
 
 class DailyForecastPrecipitaionChart extends StatelessWidget {
   final DailyData dailyForecast;
+  final DailyUnits dailyUnits;
 
-  const DailyForecastPrecipitaionChart({super.key, required this.dailyForecast});
+  const DailyForecastPrecipitaionChart({super.key, required this.dailyForecast, required this.dailyUnits});
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +101,7 @@ class DailyForecastPrecipitaionChart extends StatelessWidget {
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     return Text(
-      '${value.toInt()}%',
+      '${value.toInt()}${dailyUnits.maxPrecipitationProbability}',
       style: const TextStyle(color: Colors.white70, fontSize: 12),
       textAlign: TextAlign.left,
     );

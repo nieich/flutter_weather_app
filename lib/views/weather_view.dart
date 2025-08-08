@@ -73,7 +73,7 @@ ListView buildWeatherView(
       ),
       Row(children: [Text(_formatLocation(placemark), style: theme.textTheme.headlineSmall)]),
       Text(AppLocalizations.of(context)!.details),
-      buildInfoTiles(context, forecastData, size, theme),
+      _buildInfoTiles(context, forecastData, size, theme),
       SizedBox(height: 10),
       Text(AppLocalizations.of(context)!.hourly, style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface)),
       SizedBox(
@@ -119,18 +119,29 @@ ListView buildWeatherView(
         ),
       ),
       SizedBox(height: 10),
-      Text(AppLocalizations.of(context)!.dailyTemp, style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface)),
-      DailyForecastTempChart(dailyForecast: forecastData.daily!, dailyUnits: forecastData.dailyUnits!),
-      Text(
-        AppLocalizations.of(context)!.dailyPrecipitation,
-        style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface),
-      ),
-      DailyForecastPrecipitaionChart(dailyForecast: forecastData.daily!),
+      if (forecastData.dailyUnits != null &&
+          forecastData.daily!.time != null &&
+          forecastData.daily!.temperature2mMax != null &&
+          forecastData.daily!.temperature2mMin != null) ...[
+        Text(
+          AppLocalizations.of(context)!.dailyTemp,
+          style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface),
+        ),
+        DailyForecastTempChart(dailyForecast: forecastData.daily!, dailyUnits: forecastData.dailyUnits!),
+      ],
+      if (forecastData.daily!.maxPrecipitationProbability != null &&
+          forecastData.dailyUnits!.maxPrecipitationProbability != null) ...[
+        Text(
+          AppLocalizations.of(context)!.dailyPrecipitation,
+          style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface),
+        ),
+        DailyForecastPrecipitaionChart(dailyForecast: forecastData.daily!, dailyUnits: forecastData.dailyUnits!),
+      ],
     ],
   );
 }
 
-Column buildInfoTiles(BuildContext context, Forecast forecastData, Size size, ThemeData theme) {
+Column _buildInfoTiles(BuildContext context, Forecast forecastData, Size size, ThemeData theme) {
   final index = forecastData.hourly?.time?.indexOf(DateFormat("yyyy-MM-dd'T'HH:00").format(DateTime.now()).toString());
   final visibilty = forecastData.hourly!.visibility?[index!];
   final surfacePressure = forecastData.hourly?.surfacePressure?[index!];
@@ -140,19 +151,19 @@ Column buildInfoTiles(BuildContext context, Forecast forecastData, Size size, Th
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          buildInfoTile(
+          _buildInfoTile(
             '${forecastData.current?.cloudCover} ${forecastData.currentUnits?.cloudCover}',
             AppLocalizations.of(context)!.cloudCover,
             size,
             theme,
           ),
-          buildInfoTile(
+          _buildInfoTile(
             '${forecastData.current?.precipitation} ${forecastData.currentUnits?.precipitation}',
             AppLocalizations.of(context)!.precipitation,
             size,
             theme,
           ),
-          buildInfoTile(
+          _buildInfoTile(
             '${forecastData.current?.relativeHumidity2m} ${forecastData.currentUnits?.relativeHumidity2m}',
             AppLocalizations.of(context)!.humidity,
             size,
@@ -164,19 +175,19 @@ Column buildInfoTiles(BuildContext context, Forecast forecastData, Size size, Th
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          buildInfoTile(
+          _buildInfoTile(
             '${forecastData.current?.windSpeed10m} ${forecastData.currentUnits?.windSpeed10m}',
             AppLocalizations.of(context)!.windSpeed,
             size,
             theme,
           ),
-          buildInfoTile(
+          _buildInfoTile(
             '$surfacePressure ${forecastData.hourlyUnits?.surfacePressure}',
             AppLocalizations.of(context)!.pressure,
             size,
             theme,
           ),
-          buildInfoTile(
+          _buildInfoTile(
             '$visibilty ${forecastData.hourlyUnits?.visibility}',
             AppLocalizations.of(context)!.visibility,
             size,
@@ -188,7 +199,7 @@ Column buildInfoTiles(BuildContext context, Forecast forecastData, Size size, Th
   );
 }
 
-Container buildInfoTile(String upperTxt, String lowerTxt, Size size, ThemeData theme) {
+Container _buildInfoTile(String upperTxt, String lowerTxt, Size size, ThemeData theme) {
   return Container(
     height: size.width * 0.3,
     width: size.width * 0.3,
