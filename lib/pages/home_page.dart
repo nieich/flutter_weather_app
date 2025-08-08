@@ -25,6 +25,10 @@ class _HomePageState extends State<HomePage> {
   Placemark? _placemark;
   bool _isLoading = true;
   String? _error;
+  bool _isRefreshing = false;
+  DateTime? _lastRefreshTime;
+  // Cooldown period before allowing another refresh.
+  final _refreshCooldown = const Duration(minutes: 1);
 
   @override
   void initState() {
@@ -60,6 +64,24 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _refreshWeatherData() async {
+    if (_isRefreshing) {
+      return;
+    }
+
+    final now = DateTime.now();
+    if (_lastRefreshTime != null && now.difference(_lastRefreshTime!) < _refreshCooldown) {
+      final timeToWait = _refreshCooldown - now.difference(_lastRefreshTime!);
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.pleaseWaitSeconds(timeToWait.inSeconds))));
+      }
+      return;
+    }
+
+    // Set flag to prevent concurrent refreshes.
+    _isRefreshing = true;
+
     try {
       final position = await _locationService.getCurrentPosition();
 
@@ -79,6 +101,7 @@ class _HomePageState extends State<HomePage> {
         setState(() {
           __forecastData = freshData;
           _placemark = placemark;
+          _lastRefreshTime = DateTime.now();
           _error = null; // Reset error on success
         });
       }
@@ -94,6 +117,9 @@ class _HomePageState extends State<HomePage> {
         // Inform the user about the failed refresh.
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.weatherDataRefreshFailed)));
       }
+    } finally {
+      // Reset flag in a finally block to ensure it's always reset.
+      _isRefreshing = false;
     }
   }
 

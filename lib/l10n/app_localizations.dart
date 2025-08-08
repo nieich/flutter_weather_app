@@ -337,6 +337,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Precipitation'**
   String get precipitation;
+
+  /// Message to show when user tries to refresh too soon.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait {seconds} seconds before refreshing again.'**
+  String pleaseWaitSeconds(int seconds);
 }
 
 class _AppLocalizationsDelegate

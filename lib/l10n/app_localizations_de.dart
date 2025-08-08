@@ -131,4 +131,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get precipitation => 'Precipitation';
+
+  @override
+  String pleaseWaitSeconds(int seconds) {
+    return 'Please wait $seconds seconds before refreshing again.';
+  }
 }

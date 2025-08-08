@@ -158,5 +158,15 @@
   "precipitation": "Precipitation",
   "@precipitation": {
     "description": "Description for the precipitation"
-  }  
+  },
+  "pleaseWaitSeconds": "Please wait {seconds} seconds before refreshing again.",
+  "@pleaseWaitSeconds": {
+    "description": "Message to show when user tries to refresh too soon.",
+    "placeholders": {
+        "seconds": {
+            "type": "int",
+            "example": "45"
+        }
+    }
+} 
 }

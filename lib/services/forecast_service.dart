@@ -12,6 +12,8 @@ class ForecastService {
     try {
       // We now build the URL securely and dynamically with Uri.https.
       // This is better than string manipulation, as it handles special characters correctly, for example.
+      // API Calcs = 14Days + 10Variables * 1 Location = 1 API Call
+      // ach day more adds a fraction; each Variable more adds 0.1 and everything times count of location
       final uri = Uri.https('api.open-meteo.com', '/v1/forecast', {
         'latitude': lat.toString(),
         'longitude': lon.toString(),

@@ -5,6 +5,7 @@
     "individualColorModeDescription",
     "theme",
     "cloudCover",
-    "precipitation"
+    "precipitation",
+    "pleaseWaitSeconds"
   ]
 }
