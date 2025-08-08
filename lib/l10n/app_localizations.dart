@@ -325,6 +325,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to refresh weather data.'**
   String get weatherDataRefreshFailed;
+
+  /// Description for the cloud cover
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud Cover'**
+  String get cloudCover;
+
+  /// Description for the precipitation
+  ///
+  /// In en, this message translates to:
+  /// **'Precipitation'**
+  String get precipitation;
 }
 
 class _AppLocalizationsDelegate

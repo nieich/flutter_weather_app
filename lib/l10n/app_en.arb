@@ -150,5 +150,13 @@
   "weatherDataRefreshFailed": "Failed to refresh weather data.",
   "@weatherDataRefreshFailed": {
     "description": "Description for the weather data refresh failure message"
-  }
+  },
+  "cloudCover": "Cloud Cover",
+  "@cloudCover": {
+    "description": "Description for the cloud cover"
+  },
+  "precipitation": "Precipitation",
+  "@precipitation": {
+    "description": "Description for the precipitation"
+  }  
 }

@@ -122,4 +122,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get weatherDataRefreshFailed => 'Failed to refresh weather data.';
+
+  @override
+  String get cloudCover => 'Cloud Cover';
+
+  @override
+  String get precipitation => 'Precipitation';
 }

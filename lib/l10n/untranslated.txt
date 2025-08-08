@@ -3,6 +3,8 @@
     "colorMode",
     "individualColorMode",
     "individualColorModeDescription",
-    "theme"
+    "theme",
+    "cloudCover",
+    "precipitation"
   ]
 }

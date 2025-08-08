@@ -72,57 +72,7 @@ ListView buildWeatherView(
       ),
       Row(children: [Text(_formatLocation(placemark), style: theme.textTheme.headlineSmall)]),
       Text(AppLocalizations.of(context)!.details),
-      Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              buildInfoTile(
-                '${forecastData.current?.temperature2m}${forecastData.currentUnits?.temperature2m}',
-                AppLocalizations.of(context)!.temperature,
-                size,
-                theme,
-              ),
-              buildInfoTile(
-                '${forecastData.current?.windSpeed10m} ${forecastData.currentUnits?.windSpeed10m}',
-                AppLocalizations.of(context)!.windSpeed,
-                size,
-                theme,
-              ),
-              buildInfoTile(
-                '${forecastData.current?.relativeHumidity2m}${forecastData.currentUnits?.relativeHumidity2m}',
-                AppLocalizations.of(context)!.humidity,
-                size,
-                theme,
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              buildInfoTile(
-                '${forecastData.current?.windDirection10m} ${forecastData.currentUnits?.windDirection10m}',
-                AppLocalizations.of(context)!.pressure,
-                size,
-                theme,
-              ),
-              buildInfoTile(
-                '${forecastData.current?.precipitation}${forecastData.currentUnits?.precipitation}',
-                AppLocalizations.of(context)!.dewPoint,
-                size,
-                theme,
-              ),
-              buildInfoTile(
-                '${forecastData.current?.cloudCover} ${forecastData.currentUnits?.cloudCover}',
-                AppLocalizations.of(context)!.visibility,
-                size,
-                theme,
-              ),
-            ],
-          ),
-        ],
-      ),
+      buildInfoTiles(context, forecastData, size, theme),
       SizedBox(height: 10),
       Text(AppLocalizations.of(context)!.hourly, style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface)),
       SizedBox(
@@ -175,6 +125,64 @@ ListView buildWeatherView(
         style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface),
       ),
       //DailyForecastPrecipitaionChart(dailyForecast: forecastData.dailyForecast!),
+    ],
+  );
+}
+
+Column buildInfoTiles(BuildContext context, Forecast forecastData, Size size, ThemeData theme) {
+  final index = forecastData.hourly?.time?.indexOf(DateFormat("yyyy-MM-dd'T'HH:00").format(DateTime.now()).toString());
+  final visibilty = forecastData.hourly!.visibility?[index!];
+  final surfacePressure = forecastData.hourly?.surfacePressure?[index!];
+
+  return Column(
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          buildInfoTile(
+            '${forecastData.current?.cloudCover} ${forecastData.currentUnits?.cloudCover}',
+            AppLocalizations.of(context)!.cloudCover,
+            size,
+            theme,
+          ),
+          buildInfoTile(
+            '${forecastData.current?.precipitation} ${forecastData.currentUnits?.precipitation}',
+            AppLocalizations.of(context)!.precipitation,
+            size,
+            theme,
+          ),
+          buildInfoTile(
+            '${forecastData.current?.relativeHumidity2m} ${forecastData.currentUnits?.relativeHumidity2m}',
+            AppLocalizations.of(context)!.humidity,
+            size,
+            theme,
+          ),
+        ],
+      ),
+      const SizedBox(height: 10),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          buildInfoTile(
+            '${forecastData.current?.windSpeed10m} ${forecastData.currentUnits?.windSpeed10m}',
+            AppLocalizations.of(context)!.windSpeed,
+            size,
+            theme,
+          ),
+          buildInfoTile(
+            '$surfacePressure ${forecastData.hourlyUnits?.surfacePressure}',
+            AppLocalizations.of(context)!.pressure,
+            size,
+            theme,
+          ),
+          buildInfoTile(
+            '$visibilty ${forecastData.hourlyUnits?.visibility}',
+            AppLocalizations.of(context)!.visibility,
+            size,
+            theme,
+          ),
+        ],
+      ),
     ],
   );
 }

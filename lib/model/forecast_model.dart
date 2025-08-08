@@ -211,9 +211,11 @@ class HourlyUnits {
   final String? time;
   final String? temperature2m;
   final String? precipitationProbability;
+  final String? visibility;
+  final String? surfacePressure;
   // Add further units here as nullable string if required.
 
-  HourlyUnits({this.time, this.temperature2m, this.precipitationProbability});
+  HourlyUnits({this.time, this.temperature2m, this.precipitationProbability, this.visibility, this.surfacePressure});
 
   /// Creates a [HourlyUnits] instance from a JSON map.
   factory HourlyUnits.fromJson(Map<String, dynamic> json) {
@@ -221,6 +223,8 @@ class HourlyUnits {
       time: json['time'] as String?,
       temperature2m: json['temperature_2m'] as String?,
       precipitationProbability: json['precipitation_probability'] as String?,
+      visibility: json['visibility'] as String?,
+      surfacePressure: json['surface_pressure'] as String?,
     );
   }
 
@@ -238,9 +242,12 @@ class HourlyData {
   final List<double>? temperature2m;
   // Represents the precipitation probability as a list.
   final List<int>? precipitationProbability;
-  // Add further data fields here as a list with the appropriate type if required.
+  // Represents the visibility
+  final List<double>? visibility;
+  // Represents the surface pressure
+  final List<double>? surfacePressure;
 
-  HourlyData({this.time, this.temperature2m, this.precipitationProbability});
+  HourlyData({this.time, this.temperature2m, this.precipitationProbability, this.visibility, this.surfacePressure});
 
   /// Creates a [HourlyData] instance from a JSON map.
   factory HourlyData.fromJson(Map<String, dynamic> json) {
@@ -248,12 +255,20 @@ class HourlyData {
       time: (json['time'] as List<dynamic>?)?.cast<String>().toList(),
       temperature2m: (json['temperature_2m'] as List<dynamic>?)?.cast<double>().toList(),
       precipitationProbability: (json['precipitation_probability'] as List<dynamic>?)?.cast<int>().toList(),
+      visibility: (json['visibility'] as List<dynamic>?)?.cast<double>().toList(),
+      surfacePressure: (json['surface_pressure'] as List<dynamic>?)?.cast<double>().toList(),
     );
   }
 
   /// Converts the [HourlyData] instance to a JSON map.
   Map<String, dynamic> toJson() {
-    return {'time': time, 'temperature_2m': temperature2m, 'precipitation_probability': precipitationProbability};
+    return {
+      'time': time,
+      'temperature_2m': temperature2m,
+      'precipitation_probability': precipitationProbability,
+      'visibility': visibility,
+      'surface_pressure': surfacePressure,
+    };
   }
 }
 
