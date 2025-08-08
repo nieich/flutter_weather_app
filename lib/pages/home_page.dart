@@ -48,12 +48,13 @@ class _HomePageState extends State<HomePage> {
     if (mounted && cachedData != null) {
       setState(() {
         __forecastData = cachedData;
-        _isLoading = false; // We have data, the main load indicator can go.
       });
     }
 
     // 2. request fresh data in the background.
     await _refreshWeatherData();
+
+    await Future.delayed(const Duration(seconds: 10));
 
     // 3. make sure that the charging status is complete, even if an error has occurred.
     if (mounted && _isLoading) {
@@ -153,11 +154,28 @@ class _HomePageState extends State<HomePage> {
     if (__forecastData != null) {
       return RefreshIndicator(
         onRefresh: _refreshWeatherData,
-        child: buildWeatherView(context, __forecastData!, _placemark, MediaQuery.of(context).size, Theme.of(context)),
+        child: Stack(
+          children: [
+            buildWeatherView(context, __forecastData!, _placemark, MediaQuery.of(context).size, Theme.of(context)),
+            if (_isRefreshing)
+              IgnorePointer(
+                ignoring: _isRefreshing, // Make sure to only ignore when it's visible
+                child: _buildLoadingOverlay(),
+              ),
+          ],
+        ),
       );
     }
 
     // Fallback if no data is available.
     return Center(child: Text(l10n.noWeatherDataAvail));
+  }
+
+  // A custom widget for the loading overlay
+  Widget _buildLoadingOverlay() {
+    return Container(
+      color: Colors.black.withValues(alpha: 0.5), // Semi-transparent background
+      child: const Center(child: CircularProgressIndicator()),
+    );
   }
 }
