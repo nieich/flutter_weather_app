@@ -277,20 +277,27 @@ class DailyUnits {
   final String? time;
   final String? temperature2mMax;
   final String? temperature2mMin;
+  final String? maxPrecipitationProbability;
 
-  DailyUnits({this.time, this.temperature2mMax, this.temperature2mMin});
+  DailyUnits({this.time, this.temperature2mMax, this.temperature2mMin, this.maxPrecipitationProbability});
 
   factory DailyUnits.fromJson(Map<String, dynamic> json) {
     return DailyUnits(
       time: json['time'] as String?,
       temperature2mMax: json['temperature_2m_max'] as String?,
       temperature2mMin: json['temperature_2m_min'] as String?,
+      maxPrecipitationProbability: json['precipitation_probability_max'] as String?,
     );
   }
 
   /// Converts the [DailyUnits] instance into a JSON map.
   Map<String, dynamic> toJson() {
-    return {'time': time, 'temperature_2m_max': temperature2mMax, 'temperature_2m_min': temperature2mMin};
+    return {
+      'time': time,
+      'temperature_2m_max': temperature2mMax,
+      'temperature_2m_min': temperature2mMin,
+      'precipitation_probability_max': maxPrecipitationProbability,
+    };
   }
 }
 
@@ -299,19 +306,26 @@ class DailyData {
   final List<String>? time;
   final List<double>? temperature2mMax;
   final List<double>? temperature2mMin;
+  final List<int>? maxPrecipitationProbability;
 
-  DailyData({this.time, this.temperature2mMax, this.temperature2mMin});
+  DailyData({this.time, this.temperature2mMax, this.temperature2mMin, this.maxPrecipitationProbability});
 
   factory DailyData.fromJson(Map<String, dynamic> json) {
     return DailyData(
       time: (json['time'] as List<dynamic>?)?.cast<String>().toList(),
       temperature2mMax: (json['temperature_2m_max'] as List<dynamic>?)?.cast<double>().toList(),
       temperature2mMin: (json['temperature_2m_min'] as List<dynamic>?)?.cast<double>().toList(),
+      maxPrecipitationProbability: (json['precipitation_probability_max'] as List<dynamic>?)?.cast<int>().toList(),
     );
   }
 
   /// Converts the [DailyData] instance into a JSON map.
   Map<String, dynamic> toJson() {
-    return {'time': time, 'temperature_2m_max': temperature2mMax, 'temperature_2m_min': temperature2mMin};
+    return {
+      'time': time,
+      'temperature_2m_max': temperature2mMax,
+      'temperature_2m_min': temperature2mMin,
+      'precipitation_probability_max': maxPrecipitationProbability,
+    };
   }
 }

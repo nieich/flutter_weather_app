@@ -14,10 +14,11 @@ class ForecastService {
       // This is better than string manipulation, as it handles special characters correctly, for example.
       // API Calcs = 14Days + 10Variables * 1 Location = 1 API Call
       // ach day more adds a fraction; each Variable more adds 0.1 and everything times count of location
+      // Current Cost: 1.3
       final uri = Uri.https('api.open-meteo.com', '/v1/forecast', {
         'latitude': lat.toString(),
         'longitude': lon.toString(),
-        'daily': 'temperature_2m_max,temperature_2m_min',
+        'daily': 'temperature_2m_max,temperature_2m_min,precipitation_probability_max',
         'hourly': 'temperature_2m,precipitation_probability,visibility,surface_pressure',
         'current': 'temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,wind_direction_10m,cloud_cover',
         'timezone': 'auto',

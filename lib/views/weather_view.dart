@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_weather_app/widgets/daily_forecast_precipitation_chart.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:flutter_weather_app/l10n/app_localizations.dart';
 import 'package:flutter_weather_app/model/forecast_model.dart';
@@ -124,7 +125,7 @@ ListView buildWeatherView(
         AppLocalizations.of(context)!.dailyPrecipitation,
         style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface),
       ),
-      //DailyForecastPrecipitaionChart(dailyForecast: forecastData.dailyForecast!),
+      DailyForecastPrecipitaionChart(dailyForecast: forecastData.daily!),
     ],
   );
 }
