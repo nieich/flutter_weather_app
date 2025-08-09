@@ -142,9 +142,22 @@ ListView buildWeatherView(
 }
 
 Column _buildInfoTiles(BuildContext context, Forecast forecastData, Size size, ThemeData theme) {
+  final l10n = AppLocalizations.of(context)!;
+  final numberFormatter = NumberFormat.decimalPattern(l10n.localeName);
+
   final index = forecastData.hourly?.time?.indexOf(DateFormat("yyyy-MM-dd'T'HH:00").format(DateTime.now()).toString());
-  final visibilty = forecastData.hourly!.visibility?[index!];
-  final surfacePressure = forecastData.hourly?.surfacePressure?[index!];
+  // It's safer to check if the index was found.
+  double visibility = 0;
+  double surfacePressure = 0;
+
+  if (index != null && index != -1) {
+    visibility = forecastData.hourly!.visibility![index];
+    surfacePressure = forecastData.hourly!.surfacePressure![index];
+  }
+
+  // Format the visibility to an integer string to remove ".0", or use a placeholder.
+  final visibilityText = numberFormatter.format(visibility.toInt()).toString();
+  final surfacePressureText = numberFormatter.format(surfacePressure.toInt()).toString();
 
   return Column(
     children: [
@@ -182,13 +195,13 @@ Column _buildInfoTiles(BuildContext context, Forecast forecastData, Size size, T
             theme,
           ),
           _buildInfoTile(
-            '$surfacePressure ${forecastData.hourlyUnits?.surfacePressure}',
+            '$surfacePressureText ${forecastData.hourlyUnits?.surfacePressure}',
             AppLocalizations.of(context)!.pressure,
             size,
             theme,
           ),
           _buildInfoTile(
-            '$visibilty ${forecastData.hourlyUnits?.visibility}',
+            '$visibilityText ${forecastData.hourlyUnits?.visibility ?? ''}',
             AppLocalizations.of(context)!.visibility,
             size,
             theme,
