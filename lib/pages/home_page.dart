@@ -75,9 +75,17 @@ class _HomePageState extends State<HomePage> {
     if (_lastRefreshTime != null && now.difference(_lastRefreshTime!) < _refreshCooldown) {
       final timeToWait = _refreshCooldown - now.difference(_lastRefreshTime!);
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.pleaseWaitSeconds(timeToWait.inSeconds))));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.pleaseWaitSeconds(timeToWait.inSeconds)),
+            action: SnackBarAction(
+              label: l10n.ok,
+              onPressed: () {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              },
+            ),
+          ),
+        );
       }
       return;
     }
@@ -125,7 +133,17 @@ class _HomePageState extends State<HomePage> {
           });
         }
         // Inform the user about the failed refresh.
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.weatherDataRefreshFailed)));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.weatherDataRefreshFailed),
+            action: SnackBarAction(
+              label: l10n.ok,
+              onPressed: () {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              },
+            ),
+          ),
+        );
       }
     } finally {
       // Reset flag in a finally block to ensure it's always reset.
