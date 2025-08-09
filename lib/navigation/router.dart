@@ -3,6 +3,8 @@ import 'package:flutter_weather_app/navigation/routes.dart';
 import 'package:flutter_weather_app/navigation/scaffold_with_drawer.dart';
 import 'package:flutter_weather_app/pages/home_page.dart';
 import 'package:flutter_weather_app/pages/settings/settings_page.dart';
+import 'package:flutter_weather_app/pages/settings/settings_theme_page.dart';
+import 'package:flutter_weather_app/pages/settings/settings_units_page.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -10,30 +12,41 @@ final _rootNavigationKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 final router = GoRouter(
   navigatorKey: _rootNavigationKey,
-  initialLocation: Routes.home,
+  initialLocation: Routes.pathHome,
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         // Übergeben Sie den fullPath des aktuellen GoRoute an Ihre Scaffold-Komponente.
-        return ScaffoldWithDrawer(
-          navigationShell: navigationShell,
-          currentRoutePath: state.fullPath,
-        );
+        return ScaffoldWithDrawer(navigationShell: navigationShell, currentRoutePath: state.fullPath);
       },
       branches: [
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: Routes.home,
+              path: Routes.pathHome,
               builder: (context, state) {
                 return const HomePage();
               },
             ),
             GoRoute(
-              path: Routes.settings,
+              path: Routes.pathSettings,
               builder: (context, state) {
                 return const SettingsPage();
               },
+              routes: [
+                GoRoute(
+                  path: Routes.settingsTheme,
+                  builder: (context, state) {
+                    return const SettingsThemePage();
+                  },
+                ),
+                GoRoute(
+                  path: Routes.settingsUnits,
+                  builder: (context, state) {
+                    return const SettingsUnitPage();
+                  },
+                ),
+              ],
             ),
           ],
         ),

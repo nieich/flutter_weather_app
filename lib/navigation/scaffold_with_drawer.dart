@@ -14,7 +14,7 @@ class ScaffoldWithDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: (currentRoutePath != Routes.settings)
+      appBar: (!currentRoutePath!.contains(Routes.settings))
           ? AppBar(
               title: Text(
                 DateFormat("HH:mm", AppLocalizations.of(context)!.localeName).format(DateTime.now()),
