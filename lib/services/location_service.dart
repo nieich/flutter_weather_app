@@ -1,8 +1,11 @@
+import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:logging/logging.dart';
 
 class LocationService {
+  final _logger = Logger('LocationService');
+
   /// Bestimmt die aktuelle Position des Geräts.
   ///
   /// Wenn die Standortdienste deaktiviert sind oder die Berechtigungen
@@ -40,17 +43,25 @@ class LocationService {
   }
 
   /// Converts latitude and longitude into a placemark with address details.
-  Future<Placemark> getPlacemark(double latitude, double longitude) async {
-    final Logger logger = Logger('LocationService');
+  Future<Placemark?> getPlacemark(double latitude, double longitude) async {
     try {
-      logger.info('Fetching placemark for lat: $latitude, lon: $longitude');
+      _logger.info('Fetching placemark for lat: $latitude, lon: $longitude');
 
       List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+
+      if (placemarks.isEmpty) {
+        _logger.warning('No placemarks found for coordinates.');
+      }
+
       // The first placemark is usually the most relevant.
       return placemarks.first;
-    } catch (e) {
-      // Handle potential errors, e.g., network issues or no results found.
-      throw Exception('Failed to get placemark: $e');
+    } on PlatformException catch (e, stackTrace) {
+      _logger.severe('Failed to get placemark.', e, stackTrace);
+      // IO_ERROR often means no internet connection on Android.
+      throw Exception('Failed to get location details. Please check your internet connection and try again.');
+    } catch (e, stackTrace) {
+      _logger.severe('An unexpected error occurred while getting placemark.', e, stackTrace);
+      return null;
     }
   }
 }

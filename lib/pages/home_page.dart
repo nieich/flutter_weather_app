@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
       ]);
 
       final freshData = results[0] as Forecast;
-      final placemark = results[1] as Placemark;
+      final placemark = results[1] as Placemark?;
 
       // Save the new data in the cache.
       await _forecastCacheService.saveForecastData(freshData);
