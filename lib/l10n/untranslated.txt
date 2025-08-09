@@ -6,6 +6,15 @@
     "theme",
     "cloudCover",
     "precipitation",
-    "pleaseWaitSeconds"
+    "pleaseWaitSeconds",
+    "celsius",
+    "fahrenheit",
+    "millimeter",
+    "inch",
+    "kilometerPerHour",
+    "meterPerSecond",
+    "milePerHour",
+    "knots",
+    "unitInfo"
   ]
 }

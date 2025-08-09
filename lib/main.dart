@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_weather_app/l10n/app_localizations.dart';
 import 'package:flutter_weather_app/navigation/router.dart';
 import 'package:flutter_weather_app/provider/theme_provider.dart';
+import 'package:flutter_weather_app/provider/unit_provider.dart';
+import 'package:flutter_weather_app/services/log_service.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
@@ -14,10 +16,19 @@ void main() async {
   Logger.root.onRecord.listen((record) {
     // ignore: avoid_print
     print('${record.level.name}: ${record.time}: ${record.message}');
+    LogService().add(record);
   });
 
   await initializeDateFormatting('de', null);
-  runApp(ChangeNotifierProvider(create: (context) => ThemeProvider(), child: const MyApp()));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => UnitProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -9,4 +9,6 @@ class Routes {
   static const String pathSettingsTheme = '$pathSettings/$settingsTheme';
   static const String settingsUnits = 'Units';
   static const String pathSettingsUnits = '$pathSettings/$settingsUnits';
+  static const String settingsDev = 'Dev';
+  static const String pathSettingsDev = '$pathSettings/$settingsDev';
 }

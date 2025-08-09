@@ -3,8 +3,9 @@ import 'package:flutter_weather_app/navigation/routes.dart';
 import 'package:flutter_weather_app/navigation/scaffold_with_drawer.dart';
 import 'package:flutter_weather_app/pages/home_page.dart';
 import 'package:flutter_weather_app/pages/settings/settings_page.dart';
-import 'package:flutter_weather_app/pages/settings/settings_theme_page.dart';
-import 'package:flutter_weather_app/pages/settings/settings_units_page.dart';
+import 'package:flutter_weather_app/pages/settings/settings_subpages/settings_dev_page.dart';
+import 'package:flutter_weather_app/pages/settings/settings_subpages/settings_theme_page.dart';
+import 'package:flutter_weather_app/pages/settings/settings_subpages/settings_units_page.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -44,6 +45,12 @@ final router = GoRouter(
                   path: Routes.settingsUnits,
                   builder: (context, state) {
                     return const SettingsUnitPage();
+                  },
+                ),
+                GoRoute(
+                  path: Routes.settingsDev,
+                  builder: (context, state) {
+                    return const SettingsDevPage();
                   },
                 ),
               ],

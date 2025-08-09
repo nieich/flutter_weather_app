@@ -67,6 +67,9 @@ dependencies:
   # The "flutter_colorpicker" package is used for color picking functionality.
   flutter_colorpicker:
 
+  # The "share_plus" package is used for sharing files.
+  share_plus:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

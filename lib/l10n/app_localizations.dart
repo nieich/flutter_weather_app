@@ -343,6 +343,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please wait {seconds} seconds before refreshing again.'**
   String pleaseWaitSeconds(int seconds);
+
+  /// Description for Celsius
+  ///
+  /// In en, this message translates to:
+  /// **'Celsius'**
+  String get celsius;
+
+  /// Description for Fahrenheit
+  ///
+  /// In en, this message translates to:
+  /// **'Fahrenheit'**
+  String get fahrenheit;
+
+  /// Description for Millimeter
+  ///
+  /// In en, this message translates to:
+  /// **'Millimeter'**
+  String get millimeter;
+
+  /// Description for Inch
+  ///
+  /// In en, this message translates to:
+  /// **'Inch'**
+  String get inch;
+
+  /// Description for Kilometer per Hour
+  ///
+  /// In en, this message translates to:
+  /// **'Kilometer per Hour'**
+  String get kilometerPerHour;
+
+  /// Description for Meter per Second
+  ///
+  /// In en, this message translates to:
+  /// **'Meter per Second'**
+  String get meterPerSecond;
+
+  /// Description for Mile per Hour
+  ///
+  /// In en, this message translates to:
+  /// **'Mile per Hour'**
+  String get milePerHour;
+
+  /// Description for Knots
+  ///
+  /// In en, this message translates to:
+  /// **'Knots'**
+  String get knots;
+
+  /// Description for Unit Info
+  ///
+  /// In en, this message translates to:
+  /// **'Changes will take affect with next data refresh'**
+  String get unitInfo;
 }
 
 class _AppLocalizationsDelegate

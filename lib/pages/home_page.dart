@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_weather_app/provider/unit_provider.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:flutter_weather_app/l10n/app_localizations.dart';
 import 'package:flutter_weather_app/model/forecast_model.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_weather_app/services/forecast_cache_service.dart';
 import 'package:flutter_weather_app/services/forecast_service.dart';
 import 'package:flutter_weather_app/services/location_service.dart';
 import 'package:flutter_weather_app/views/weather_view.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -84,11 +86,18 @@ class _HomePageState extends State<HomePage> {
     _isRefreshing = true;
 
     try {
+      final unitProvider = Provider.of<UnitProvider>(context, listen: false);
       final position = await _locationService.getCurrentPosition();
 
       // Fetch forecast and placemark in parallel for better performance.
       final results = await Future.wait([
-        _forecastService.fetchForecast(position.latitude, position.longitude),
+        _forecastService.fetchForecast(
+          lat: position.latitude,
+          lon: position.longitude,
+          temperatureUnit: unitProvider.temperatureUnit,
+          windSpeedUnit: unitProvider.windSpeedUnit,
+          precipitationUnit: unitProvider.precipitationUnit,
+        ),
         _locationService.getPlacemark(position.latitude, position.longitude),
       ]);
 

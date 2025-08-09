@@ -167,6 +167,42 @@
             "type": "int",
             "example": "45"
         }
-    }
-} 
+    }   
+  },
+  "celsius": "Celsius",
+  "@celsius": {
+    "description": "Description for Celsius"
+  },
+  "fahrenheit": "Fahrenheit",
+  "@fahrenheit": {
+    "description": "Description for Fahrenheit"
+  },
+  "millimeter": "Millimeter",
+  "@millimeter": {
+    "description": "Description for Millimeter"
+  },
+  "inch": "Inch",
+  "@inch": {
+    "description": "Description for Inch"
+  },
+  "kilometerPerHour": "Kilometer per Hour",
+  "@kilometerPerHour": {
+    "description": "Description for Kilometer per Hour"
+  },
+  "meterPerSecond": "Meter per Second",
+  "@meterPerSecond": {
+    "description": "Description for Meter per Second"
+  },
+  "milePerHour": "Mile per Hour",
+  "@milePerHour": {
+    "description": "Description for Mile per Hour"
+  },
+  "knots": "Knots",
+  "@knots": {
+    "description": "Description for Knots"
+  },
+  "unitInfo":"Changes will take affect with next data refresh",
+  "@unitInfo": {
+    "description": "Description for Unit Info"
+  }  
 }

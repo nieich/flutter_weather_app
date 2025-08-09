@@ -21,6 +21,9 @@ class SettingsPage extends StatelessWidget {
           _buildSettingTile(context, 'Units', 'Set the Units', Icons.thermostat, () {
             context.push(Routes.pathSettingsUnits);
           }),
+          _buildSettingTile(context, 'Dev', 'Developer Settings', Icons.developer_mode, () {
+            context.push(Routes.pathSettingsDev);
+          }),
         ],
       ),
     );

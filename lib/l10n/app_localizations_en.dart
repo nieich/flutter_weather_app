@@ -133,4 +133,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String pleaseWaitSeconds(int seconds) {
     return 'Please wait $seconds seconds before refreshing again.';
   }
+
+  @override
+  String get celsius => 'Celsius';
+
+  @override
+  String get fahrenheit => 'Fahrenheit';
+
+  @override
+  String get millimeter => 'Millimeter';
+
+  @override
+  String get inch => 'Inch';
+
+  @override
+  String get kilometerPerHour => 'Kilometer per Hour';
+
+  @override
+  String get meterPerSecond => 'Meter per Second';
+
+  @override
+  String get milePerHour => 'Mile per Hour';
+
+  @override
+  String get knots => 'Knots';
+
+  @override
+  String get unitInfo => 'Changes will take affect with next data refresh';
 }
