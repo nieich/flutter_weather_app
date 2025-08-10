@@ -11,7 +11,7 @@ ListView buildWeatherView(BuildContext context, Forecast forecastData, String? p
   final random = math.Random();
   final randomImageIndex = random.nextInt(2) + 1; // Zufällige Zahl zwischen 1 und 2
   final imagePath = WeatherCode.fromCode(
-    forecastData.current?.weatherCode,
+    forecastData.current.weatherCode,
   ).assetPath.replaceAll('_X', '_$randomImageIndex');
 
   // Filter hourly data to show the next 24 hours starting from the current hour.
@@ -20,14 +20,14 @@ ListView buildWeatherView(BuildContext context, Forecast forecastData, String? p
   final hourly = forecastData.hourly;
   List<int> hourlyIndices = [];
 
-  if (hourly?.time != null && hourly!.time!.isNotEmpty) {
+  if (hourly.time.isNotEmpty) {
     // Find the index of the first forecast entry that is not before the current hour.
-    final startIndex = hourly.time!.indexWhere((timeString) {
+    final startIndex = hourly.time.indexWhere((timeString) {
       return !DateTime.parse(timeString).isBefore(currentHour.add(const Duration(hours: 1)));
     });
 
     if (startIndex != -1) {
-      final endIndex = math.min(startIndex + 24, hourly.time!.length);
+      final endIndex = math.min(startIndex + 24, hourly.time.length);
       hourlyIndices = List.generate(endIndex - startIndex, (i) => startIndex + i);
     }
   }
@@ -44,7 +44,7 @@ ListView buildWeatherView(BuildContext context, Forecast forecastData, String? p
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '${forecastData.current?.temperature2m}${forecastData.currentUnits?.temperature2m}',
+            '${forecastData.current.temperature2m}${forecastData.currentUnits.temperature2m}',
             style: TextStyle(fontSize: 40, color: theme.colorScheme.onSurface, fontWeight: FontWeight.bold),
           ),
         ],
@@ -72,9 +72,9 @@ ListView buildWeatherView(BuildContext context, Forecast forecastData, String? p
             final String time = DateFormat(
               "HH:mm",
               AppLocalizations.of(context)!.localeName,
-            ).format(DateTime.parse(forecastData.hourly!.time![index]));
-            final temperature = forecastData.hourly!.temperature2m![index];
-            final precipitationProbability = forecastData.hourly!.precipitationProbability![index];
+            ).format(DateTime.parse(forecastData.hourly.time[index]));
+            final temperature = forecastData.hourly.temperature2m[index];
+            final precipitationProbability = forecastData.hourly.precipitationProbability[index];
             return Card(
               margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
               child: Container(
@@ -89,12 +89,12 @@ ListView buildWeatherView(BuildContext context, Forecast forecastData, String? p
                       style: TextStyle(fontSize: 16, color: theme.colorScheme.onSecondary, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      '$precipitationProbability${forecastData.hourlyUnits?.precipitationProbability}',
+                      '$precipitationProbability${forecastData.hourlyUnits.precipitationProbability}',
                       style: TextStyle(color: Colors.blue),
                     ),
                     Icon(Icons.sunny, size: 32, color: theme.colorScheme.onSecondary),
                     Text(
-                      '$temperature${forecastData.hourlyUnits?.temperature2m}',
+                      '$temperature${forecastData.hourlyUnits.temperature2m}',
                       style: TextStyle(fontSize: 18, color: theme.colorScheme.onSecondary),
                     ),
                   ],
@@ -105,24 +105,14 @@ ListView buildWeatherView(BuildContext context, Forecast forecastData, String? p
         ),
       ),
       SizedBox(height: 10),
-      if (forecastData.dailyUnits != null &&
-          forecastData.daily!.time != null &&
-          forecastData.daily!.temperature2mMax != null &&
-          forecastData.daily!.temperature2mMin != null) ...[
-        Text(
-          AppLocalizations.of(context)!.dailyTemp,
-          style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface),
-        ),
-        DailyForecastTempChart(dailyForecast: forecastData.daily!, dailyUnits: forecastData.dailyUnits!),
-      ],
-      if (forecastData.daily!.maxPrecipitationProbability != null &&
-          forecastData.dailyUnits!.maxPrecipitationProbability != null) ...[
-        Text(
-          AppLocalizations.of(context)!.dailyPrecipitation,
-          style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface),
-        ),
-        DailyForecastPrecipitaionChart(dailyForecast: forecastData.daily!, dailyUnits: forecastData.dailyUnits!),
-      ],
+      Text(AppLocalizations.of(context)!.dailyTemp, style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface)),
+      DailyForecastTempChart(dailyForecast: forecastData.daily, dailyUnits: forecastData.dailyUnits),
+
+      Text(
+        AppLocalizations.of(context)!.dailyPrecipitation,
+        style: TextStyle(fontSize: 18, color: theme.colorScheme.onSurface),
+      ),
+      DailyForecastPrecipitaionChart(dailyForecast: forecastData.daily, dailyUnits: forecastData.dailyUnits),
     ],
   );
 }
@@ -131,14 +121,14 @@ Column _buildInfoTiles(BuildContext context, Forecast forecastData, Size size, T
   final l10n = AppLocalizations.of(context)!;
   final numberFormatter = NumberFormat.decimalPattern(l10n.localeName);
 
-  final index = forecastData.hourly?.time?.indexOf(DateFormat("yyyy-MM-dd'T'HH:00").format(DateTime.now()).toString());
+  final index = forecastData.hourly.time.indexOf(DateFormat("yyyy-MM-dd'T'HH:00").format(DateTime.now()).toString());
   // It's safer to check if the index was found.
   double visibility = 0;
   double surfacePressure = 0;
 
-  if (index != null && index != -1) {
-    visibility = forecastData.hourly!.visibility![index];
-    surfacePressure = forecastData.hourly!.surfacePressure![index];
+  if (index != -1) {
+    visibility = forecastData.hourly.visibility[index];
+    surfacePressure = forecastData.hourly.surfacePressure[index];
   }
 
   // Format the visibility to an integer string to remove ".0", or use a placeholder.
@@ -151,19 +141,19 @@ Column _buildInfoTiles(BuildContext context, Forecast forecastData, Size size, T
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildInfoTile(
-            '${forecastData.current?.cloudCover} ${forecastData.currentUnits?.cloudCover}',
+            '${forecastData.current.cloudCover} ${forecastData.currentUnits.cloudCover}',
             AppLocalizations.of(context)!.cloudCover,
             size,
             theme,
           ),
           _buildInfoTile(
-            '${forecastData.current?.precipitation} ${forecastData.currentUnits?.precipitation}',
+            '${forecastData.current.precipitation} ${forecastData.currentUnits.precipitation}',
             AppLocalizations.of(context)!.precipitation,
             size,
             theme,
           ),
           _buildInfoTile(
-            '${forecastData.current?.relativeHumidity2m} ${forecastData.currentUnits?.relativeHumidity2m}',
+            '${forecastData.current.relativeHumidity2m} ${forecastData.currentUnits.relativeHumidity2m}',
             AppLocalizations.of(context)!.humidity,
             size,
             theme,
@@ -175,19 +165,19 @@ Column _buildInfoTiles(BuildContext context, Forecast forecastData, Size size, T
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildInfoTile(
-            '${forecastData.current?.windSpeed10m} ${forecastData.currentUnits?.windSpeed10m}',
+            '${forecastData.current.windSpeed10m} ${forecastData.currentUnits.windSpeed10m}',
             AppLocalizations.of(context)!.windSpeed,
             size,
             theme,
           ),
           _buildInfoTile(
-            '$surfacePressureText ${forecastData.hourlyUnits?.surfacePressure}',
+            '$surfacePressureText ${forecastData.hourlyUnits.surfacePressure}',
             AppLocalizations.of(context)!.pressure,
             size,
             theme,
           ),
           _buildInfoTile(
-            '$visibilityText ${forecastData.hourlyUnits?.visibility ?? ''}',
+            '$visibilityText ${forecastData.hourlyUnits.visibility}',
             AppLocalizations.of(context)!.visibility,
             size,
             theme,

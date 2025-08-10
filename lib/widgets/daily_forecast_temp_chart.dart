@@ -34,7 +34,7 @@ class DailyForecastTempChart extends StatelessWidget {
     final minTemps = dailyForecast.temperature2mMin;
     final maxTemps = dailyForecast.temperature2mMax;
 
-    if (timeList == null || timeList.isEmpty || minTemps == null || maxTemps == null) {
+    if (timeList.isEmpty) {
       return LineChartData(); // Return empty data to avoid errors
     }
 
@@ -154,7 +154,7 @@ class DailyForecastTempChart extends StatelessWidget {
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
-    final unit = dailyUnits.temperature2mMax ?? '°C';
+    final unit = dailyUnits.temperature2mMax;
     return Text(
       '${value.toInt()}$unit',
       style: const TextStyle(color: Colors.white70, fontSize: 12),

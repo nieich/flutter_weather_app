@@ -60,7 +60,7 @@ class DailyForecastPrecipitaionChart extends StatelessWidget {
         touchTooltipData: LineTouchTooltipData(
           getTooltipItems: (List<LineBarSpot> touchedSpots) {
             return touchedSpots.map((spot) {
-              final precipitation = dailyForecast.maxPrecipitationProbability?[spot.x.toInt()];
+              final precipitation = dailyForecast.maxPrecipitationProbability[spot.x.toInt()];
               return LineTooltipItem('$precipitation%', const TextStyle(color: Colors.white));
             }).toList();
           },
@@ -68,12 +68,12 @@ class DailyForecastPrecipitaionChart extends StatelessWidget {
       ),
       borderData: FlBorderData(show: true, border: Border.all(color: const Color(0xff37434d))),
       minX: 0,
-      maxX: (dailyForecast.time!.length - 1).toDouble(),
+      maxX: (dailyForecast.time.length - 1).toDouble(),
       minY: 0,
       maxY: 100,
       lineBarsData: [
         LineChartBarData(
-          spots: dailyForecast.maxPrecipitationProbability!.asMap().entries.map((entry) {
+          spots: dailyForecast.maxPrecipitationProbability.asMap().entries.map((entry) {
             return FlSpot(entry.key.toDouble(), entry.value.toDouble());
           }).toList(),
           isCurved: true,
@@ -91,7 +91,7 @@ class DailyForecastPrecipitaionChart extends StatelessWidget {
   }
 
   Widget bottomTitleWidgets(double value, TitleMeta meta, BuildContext context) {
-    final day = DateFormat("D", AppLocalizations.of(context)!.localeName).parse(dailyForecast.time![value.toInt()]);
+    final day = DateFormat("D", AppLocalizations.of(context)!.localeName).parse(dailyForecast.time[value.toInt()]);
     final locale = AppLocalizations.of(context)!.localeName;
     return SideTitleWidget(
       meta: meta,
