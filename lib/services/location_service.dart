@@ -98,9 +98,8 @@ class LocationService {
         if (data['address'] != null) {
           final address = data['address'];
           final String city = address['city'] ?? address['town'] ?? address['village'] ?? '';
-          final String country = address['country'] ?? '';
 
-          if (city.isNotEmpty && country.isNotEmpty) {
+          if (city.isNotEmpty) {
             _logger.info('Found place:$city');
             return city;
           }
