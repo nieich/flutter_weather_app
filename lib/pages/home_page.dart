@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_app/provider/unit_provider.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:flutter_weather_app/l10n/app_localizations.dart';
 import 'package:flutter_weather_app/model/forecast_model.dart';
 import 'package:flutter_weather_app/services/forecast_cache_service.dart';
@@ -24,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   late AppLocalizations l10n;
 
   Forecast? __forecastData;
-  Placemark? _placemark;
+  String? _place;
   bool _isLoading = true;
   String? _error;
   bool _isRefreshing = false;
@@ -96,6 +95,7 @@ class _HomePageState extends State<HomePage> {
     try {
       final unitProvider = Provider.of<UnitProvider>(context, listen: false);
       final position = await _locationService.getCurrentPosition();
+      final localName = mounted ? AppLocalizations.of(context)!.localeName : '';
 
       // Fetch forecast and placemark in parallel for better performance.
       final results = await Future.wait([
@@ -106,11 +106,11 @@ class _HomePageState extends State<HomePage> {
           windSpeedUnit: unitProvider.windSpeedUnit,
           precipitationUnit: unitProvider.precipitationUnit,
         ),
-        _locationService.getPlacemark(position.latitude, position.longitude),
+        _locationService.getPlace(position.latitude, position.longitude, localName),
       ]);
 
       final freshData = results[0] as Forecast;
-      final placemark = results[1] as Placemark?;
+      final place = results[1] as String?;
 
       // Save the new data in the cache.
       await _forecastCacheService.saveForecastData(freshData);
@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
       if (mounted) {
         setState(() {
           __forecastData = freshData;
-          _placemark = placemark;
+          _place = place;
           _lastRefreshTime = DateTime.now();
           _error = null; // Reset error on success
         });
@@ -183,7 +183,7 @@ class _HomePageState extends State<HomePage> {
         onRefresh: _refreshWeatherData,
         child: Stack(
           children: [
-            buildWeatherView(context, __forecastData!, _placemark, MediaQuery.of(context).size, Theme.of(context)),
+            buildWeatherView(context, __forecastData!, _place, MediaQuery.of(context).size, Theme.of(context)),
             if (_isRefreshing)
               IgnorePointer(
                 ignoring: _isRefreshing, // Make sure to only ignore when it's visible

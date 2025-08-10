@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_app/widgets/daily_forecast_precipitation_chart.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:flutter_weather_app/l10n/app_localizations.dart';
 import 'package:flutter_weather_app/model/forecast_model.dart';
 import 'package:flutter_weather_app/utils/weather_code_enum.dart';
@@ -8,20 +7,7 @@ import 'package:flutter_weather_app/widgets/daily_forecast_temp_chart.dart';
 import 'package:intl/intl.dart';
 import 'dart:math' as math;
 
-/// Formats the location name from a [Placemark] object for display.
-String _formatLocation(Placemark? placemark) {
-  if (placemark == null) return '...';
-  // Prioritize city, then county, then state. Fallback to a generic message.
-  return placemark.locality ?? placemark.subAdministrativeArea ?? placemark.administrativeArea ?? 'Unknown Location';
-}
-
-ListView buildWeatherView(
-  BuildContext context,
-  Forecast forecastData,
-  Placemark? placemark,
-  Size size,
-  ThemeData theme,
-) {
+ListView buildWeatherView(BuildContext context, Forecast forecastData, String? place, Size size, ThemeData theme) {
   final random = math.Random();
   final randomImageIndex = random.nextInt(2) + 1; // Zufällige Zahl zwischen 1 und 2
   final imagePath = WeatherCode.fromCode(
@@ -71,7 +57,7 @@ ListView buildWeatherView(
           ),
         ],
       ),
-      Row(children: [Text(_formatLocation(placemark), style: theme.textTheme.headlineSmall)]),
+      Row(children: [Text(place ?? '', style: theme.textTheme.headlineSmall)]),
       Text(AppLocalizations.of(context)!.details),
       _buildInfoTiles(context, forecastData, size, theme),
       SizedBox(height: 10),
